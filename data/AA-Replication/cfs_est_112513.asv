@@ -1,0 +1,377 @@
+% This m-file estimates the trade costs using bilateral MSA trade flow
+% data, treating MSA as points in space
+
+% written by Treb on October 1, 2013
+% 10/14/13: Now using all MSA locations and rest of state, google to
+% geocode each location
+% 10/28/13: Now doing it for both MSA locations only and all areas,
+% estimation functional form based on Frechet distribution assumptions
+
+    clear
+    clc
+    % cd 'C:\Users\Treb Allen\Dropbox\Research\Trade\Topography\Estimation\Estimating Transportation Costs\US-MSA'
+    
+%     if matlabpool('size') == 0 
+%         matlabpool local 12
+%     end
+
+%%% Loading the data
+
+    % msa data
+        data_coor = load('cfs_coor_revised.dat'); % x_coor_origin y_coor_origin x_coor_destination y_coor_destination
+        data_trade = load('cfs_trade_revised.dat'); % value highway, value rail, value water, value air
+        data_eth = load('cfs_eth_revised.dat'); % similarity of ethnicity, similarity of language, similarity of migrant
+    
+    % transportation cost network
+        image_rail = imread('transportationnetworks_rail_100113.png');
+        railA = (double(image_rail(:,:,1)==0));
+        railB = (double(image_rail(:,:,1)==156));
+        
+        image_rail_other = imread('transportationnetworks_rail_other_100113.png');
+        railother = (double(image_rail_other(:,:,1)==0));
+        
+        image_water = imread('transportationnetworks_water_100113.png');
+        water = (double(image_water(:,:,1)==0));
+        
+        image_road = imread('transportationnetworks_road_100113.png');
+        interstate = (double(image_road(:,:,1)==0)); % interstates
+        highway = (double(image_road(:,:,1)==156)); % US highways
+        
+        image_road_other = imread('transportationnetworks_road_other_100113.png');
+        roadother = (double(image_road_other(:,:,1)==0));
+        
+%%% Converting from latitude and longitude to coordinate of the pixel
+
+        % here are the locations of each edge of the image (according to
+        % arcgis)
+            % coor_top = 1698616.004318596;
+            % coor_left = -2661889.411634525;
+            % coor_right = 2513805.871262888;
+            % coor_bottom = -1550100.725273075;
+            
+            % ugh, despite all its proclamations, here's actually what gis exported: 
+            coor_bottom = -1826805.007;
+            coor_top = 1980542.986;
+            coor_left = -2640998.613;
+            coor_right = 2508583.172;
+
+            
+        % it's a little tricky, because we're using the image convention of
+        % coordinates
+        
+            orig_x = data_coor(:,1);
+            orig_y = data_coor(:,2);
+            dest_x = data_coor(:,3);
+            dest_y = data_coor(:,4);
+            
+            X = size(highway,1); % north / south (higher X indicates further south)
+            Y = size(highway,2); % east / west (higher Y indicates further east)
+            orig_pix = NaN(size(orig_x,1),2);
+            dest_pix = NaN(size(orig_x,1),2);
+            orig_pix(:,1) = ceil(X*((coor_top - orig_y)./(coor_top-coor_bottom))); % how much toward the top
+            dest_pix(:,1) = ceil(X*((coor_top - dest_y)./(coor_top-coor_bottom))); % how much toward the top
+            orig_pix(:,2) = ceil(Y*((orig_x - coor_left)./(coor_right-coor_left))); % how much toward the west
+            dest_pix(:,2) = ceil(Y*((dest_x - coor_left)./(coor_right-coor_left))); % how much toward the west
+            
+        % double checking that we have it right
+%             figure(1)
+%                 clf
+%                 hold on
+%                 surf(interstate,'edgecolor','none')
+%                 view(2)
+%                 scatter(orig_pix(:,2),orig_pix(:,1))
+%             
+%             
+            
+%%% Estimating the cost via each mode of travel from every origin to every
+%%% destination
+    image_X = size(image_rail,2);
+    image_Y = size(image_rail,1);
+    
+% Loading the program we use to calculate distance 
+%     getd = @(p)path(p,path);
+
+    % accurate fast marching (for 2d)
+%         getd('C:\Users\dwi902\Dropbox\Research\Trade\Topography\Simulations\Accurate fast marching');
+        % getd('C:\Users\Treb Allen\Dropbox\Research\Trade\Topography\Simulations\Accurate fast marching');
+        % h = waitbar(0,'Calculating distances');
+
+        N = size(data_coor,1); % number of bilateral pairs
+
+        dist_road = NaN(N,1);
+        dist_water = NaN(N,1);
+        dist_rail = NaN(N,1);
+        dist_air = NaN(N,1);
+
+        [temp_coor,temp_IA,temp_IC] = unique(orig_pix,'rows');
+        K = size(temp_coor,1);
+        disp('calculating distances')
+        
+        % want to normalize units by width of country
+            unit_norm = max(size(interstate));
+        
+        for i = 1:K
+
+            % here are the coordinates 
+                temp_orig_y_2 = temp_coor(i,1);
+                temp_orig_x_2 = temp_coor(i,2);
+
+            % road
+                tau = (70/20)*ones(size(interstate)); % off road costs
+                tau(roadother==1) = 70/35; % all other roads
+                tau(interstate==1) = 1; % normalized on interstate costs
+                tau(highway==1) = 70/55;  % U.S. highways 
+                t_road(:,:,i) = msfm(unit_norm*ones(size(tau))./tau, [temp_orig_y_2;temp_orig_x_2], true, true);          
+
+            % water
+                tau = 10*ones(size(interstate)); % off water costs
+                tau(water==1) = 1; % normalized on ocean costs
+                t_water(:,:,i) = msfm(unit_norm*ones(size(tau))./tau, [temp_orig_y_2;temp_orig_x_2], true, true);
+
+            % rail
+                tau = 3*ones(size(interstate)); % off rail costs
+                tau(railother==1) = 1.5; % all other rails
+                tau(railA==1) = 1; % normalized on rail costs
+                tau(railB==1) = 1.25; % second class railroads cost more
+                t_rail(:,:,i) = msfm(unit_norm*ones(size(tau))./tau, [temp_orig_y_2;temp_orig_x_2], true, true);
+
+            % air (i.e. with no network)
+                tau = ones(size(interstate));
+                t_none(:,:,i) = msfm(unit_norm*ones(size(tau))./tau, [temp_orig_y_2;temp_orig_x_2], true, true); 
+        end
+    
+        % finding all destinations to that particular origin (to
+        % minimize the number of times we have to calculate distances)
+            disp('assigning destinations to distances')
+            for i=1:K
+                temp_loc = find(orig_pix(:,1)==temp_coor(i,1) & orig_pix(:,2)==temp_coor(i,2)); % all destinations      
+                temp_t_road = t_road(:,:,i);
+                temp_t_water = t_water(:,:,i);
+                temp_t_rail = t_rail(:,:,i);
+                temp_t_none = t_none(:,:,i);
+                dist_road(temp_loc) = temp_t_road(sub2ind(size(t_road),dest_pix(temp_loc,1),dest_pix(temp_loc,2)));  
+                dist_water(temp_loc) = temp_t_water(sub2ind(size(t_road),dest_pix(temp_loc,1),dest_pix(temp_loc,2)));  
+                dist_rail(temp_loc) = temp_t_rail(sub2ind(size(t_road),dest_pix(temp_loc,1),dest_pix(temp_loc,2)));  
+                dist_air(temp_loc) = temp_t_none(sub2ind(size(t_road),dest_pix(temp_loc,1),dest_pix(temp_loc,2)));  
+            end
+            
+%% exporting the data to stata
+    data_id = load('msa_id_revised.dat');
+    temp = [data_id(:,1), data_id(:,2), dist_road, dist_water, dist_rail, dist_air];
+   
+    
+   
+%% Using the cost of traveling via each mode of travel to predict the relative costs
+
+    % getting MSA only data
+        data_MSA = load('msa_indicator_revised.dat'); % indicator equal to one if observation is between two msas
+    
+        frac_road_MSA = data_trade(:,1) ./ sum(data_trade,2);
+        frac_rail_MSA = data_trade(:,2) ./ sum(data_trade,2);
+        frac_water_MSA = data_trade(:,3) ./ sum(data_trade,2); 
+        frac_air_MSA = data_trade(:,4) ./ sum(data_trade,2); 
+        
+        frac_road_MSA = frac_road_MSA(data_MSA==1);
+        frac_rail_MSA = frac_rail_MSA(data_MSA==1);
+        frac_water_MSA = frac_water_MSA(data_MSA==1);
+        frac_air_MSA = frac_air_MSA(data_MSA==1);
+        
+        dist_road_MSA = dist_road(data_MSA==1);
+        dist_water_MSA = dist_water(data_MSA==1);
+        dist_rail_MSA = dist_rail(data_MSA==1);
+        dist_air_MSA = dist_air(data_MSA==1);     
+        
+        % demographics
+            ethnicity = data_eth(:,1);
+            language = data_eth(:,2);
+            migrant = data_eth(:,3);
+            samestate = data_eth(:,4);
+            
+            ethnicity_MSA = ethnicity(data_MSA==1);
+            language_MSA = language(data_MSA==1);
+            migrant_MSA = migrant(data_MSA==1);
+            samestate_MSA = samestate(data_MSA==1);
+
+    % fraction traveling by each mode of transportation (data)
+        frac_road = data_trade(:,1) ./ sum(data_trade,2);
+        frac_rail = data_trade(:,2) ./ sum(data_trade,2);
+        frac_water = data_trade(:,3) ./ sum(data_trade,2);
+        frac_air = data_trade(:,4) ./ sum(data_trade,2);
+        
+    % fixed effects
+        FE1 = data_id(:,1);
+        FE2 = data_id(:,2);
+        FE1_MSA = FE1(data_MSA==1);
+        FE2_MSA = FE2(data_MSA==1);
+        
+    % estimation (all CFS districts)
+        disp('Estimating relative costs')
+        sigma = 9; % need this to get the elasticity of trade flows
+   
+        % initial guesses (taking log transforms to make sure all estimates
+        % are positive)
+            cost_road_var = 0.001;
+            cost_rail_var = 0.001;
+            cost_water_var = 0.001;
+            cost_air_var = 0.001;   
+            cost_rail_fix = 0.001;
+            cost_water_fix = 0.001;
+            cost_air_fix = 0.001;  
+            x_0 = ([cost_road_var,cost_rail_var,cost_water_var,cost_air_var,cost_rail_fix,cost_water_fix,cost_air_fix]);
+            
+        % estimation
+            f = @(x) fn_mode_111513(x,dist_rail,dist_road,dist_water,dist_air,frac_rail,frac_water,frac_air);
+            x_hat = patternsearch(f,x_0,[],[],[],[],zeros(7,1),10*ones(7,1))
+            
+        % doing the gravity regression to get the scaling correct
+
+            % getting total trade costs
+                 total_trade_cost = exp(-x_hat(1)*dist_road)+...
+                   exp(-x_hat(2)*dist_rail-x_hat(5))+...
+                   exp(-x_hat(3)*dist_water-x_hat(6))+...
+                   exp(-x_hat(4)*dist_air-x_hat(7));       
+               
+            % getting total trade
+                total_trade = sum(data_trade,2);
+
+            % gravity regression (with origin and fixed effects)
+                [temp_beta,temp_beta_eth,r2,temp_resid,r2_within] = fn_trebreg_112513(log(total_trade),log(total_trade_cost),[ethnicity,language,migrant,samestate],FE1,FE2);
+                r2
+                r2_within
+                theta_hat = (sigma-1)/temp_beta
+                beta_ethnicity = temp_beta_eth ./ (1-sigma)
+                
+        % results
+            cost_road_var_hat = (x_hat(1))./theta_hat
+            cost_rail_var_hat = (x_hat(2))./theta_hat
+            cost_water_var_hat = (x_hat(3))./theta_hat
+            cost_air_var_hat = (x_hat(4))./theta_hat
+            cost_rail_fix_hat = (x_hat(5))./theta_hat
+            cost_water_fix_hat = (x_hat(6))./theta_hat
+            cost_air_fix_hat = (x_hat(7))./theta_hat
+            
+    % estimation (MSAs only)
+            disp('Estimating relative costs for MSAs only')
+            total_trade_MSA = total_trade(data_MSA==1);
+            f_MSA = @(x) fn_mode_111513(x,dist_rail_MSA,dist_road_MSA,dist_water_MSA,dist_air_MSA,frac_rail_MSA,frac_water_MSA,frac_air_MSA);
+            x_hat_MSA = patternsearch(f_MSA,x_0,[],[],[],[],zeros(7,1),10*ones(7,1));
+            
+        % doing the gravity regression to get the scaling correct
+
+            % getting total trade costs
+                 total_trade_cost_MSA = exp(-x_hat_MSA(1)*dist_road_MSA)+...
+                   exp(-x_hat_MSA(2)*dist_rail_MSA-x_hat_MSA(5))+...
+                   exp(-x_hat_MSA(3)*dist_water_MSA-x_hat_MSA(6))+...
+                   exp(-x_hat_MSA(4)*dist_air_MSA-x_hat_MSA(7));       
+               
+            % getting total trade
+                total_trade = sum(data_trade,2);
+
+            % gravity regression (with origin and fixed effects)
+                [temp_beta_MSA,temp_beta_eth_MSA,r2_MSA,temp_resid,r2_MSA_within] = fn_trebreg_112513(log(total_trade_MSA),log(total_trade_cost_MSA),[ethnicity_MSA,language_MSA,migrant_MSA,samestate_MSA],FE1_MSA,FE2_MSA);
+                theta_hat_MSA = (sigma-1)/temp_beta_MSA
+                beta_ethnicity_MSA = temp_beta_eth_MSA ./ (1-sigma)
+                r2_MSA
+                r2_MSA_within
+                
+        % results
+            cost_road_var_hat_MSA = (x_hat_MSA(1))./theta_hat_MSA
+            cost_rail_var_hat_MSA = (x_hat_MSA(2))./theta_hat_MSA
+            cost_water_var_hat_MSA = (x_hat_MSA(3))./theta_hat_MSA
+            cost_air_var_hat_MSA = (x_hat_MSA(4))./theta_hat_MSA
+            cost_rail_fix_hat_MSA = (x_hat_MSA(5))./theta_hat_MSA
+            cost_water_fix_hat_MSA = (x_hat_MSA(6))./theta_hat_MSA
+            cost_air_fix_hat_MSA = (x_hat_MSA(7))./theta_hat_MSA
+            
+    % bootstrap the SE
+        disp('Bootstrapping')
+        B = 1000;
+        s = RandStream('mt19937ar','Seed',1);
+        RandStream.setGlobalStream(s);
+        bs_draw = ceil(size(frac_rail,1)*rand(size(frac_rail,1),B));
+        bs_draw_MSA = ceil(size(frac_rail_MSA,1)*rand(size(frac_rail_MSA,1),B));
+        bs_x_hat = NaN(B,size(x_hat,2)+5); % for our estimates
+        bs_x_hat_MSA = NaN(B,size(x_hat,2)+5); % for our estimates
+
+        for b=1:B
+            b;
+            f = @(x) fn_mode_111513(x,dist_rail(bs_draw(:,b)),dist_road(bs_draw(:,b)),dist_water(bs_draw(:,b)),dist_air(bs_draw(:,b)),frac_rail(bs_draw(:,b)),frac_water(bs_draw(:,b)),frac_air(bs_draw(:,b)));
+            f_MSA = @(x) fn_mode_111513(x,dist_rail_MSA(bs_draw_MSA(:,b)),dist_road_MSA(bs_draw_MSA(:,b)),dist_water_MSA(bs_draw_MSA(:,b)),dist_air_MSA(bs_draw_MSA(:,b)),frac_rail_MSA(bs_draw_MSA(:,b)),frac_water_MSA(bs_draw_MSA(:,b)),frac_air_MSA(bs_draw_MSA(:,b)));
+            temp_x_hat = patternsearch(f,x_hat,[],[],[],[],zeros(7,1),10*ones(7,1));
+            temp_x_hat_MSA = patternsearch(f_MSA,x_hat_MSA,[],[],[],[],zeros(7,1),10*ones(7,1));
+
+            % getting the thetas
+                temp_total_trade_cost = exp(-temp_x_hat(1)*dist_road(bs_draw(:,b)))+...
+                   exp(-temp_x_hat(2)*dist_rail(bs_draw(:,b))-temp_x_hat(5))+...
+                   exp(-temp_x_hat(3)*dist_water(bs_draw(:,b))-temp_x_hat(6))+...
+                   exp(-temp_x_hat(4)*dist_air(bs_draw(:,b))-temp_x_hat(7));  
+                temp_total_trade_cost_MSA = exp(-temp_x_hat_MSA(1)*dist_road_MSA(bs_draw_MSA(:,b)))+...
+                   exp(-temp_x_hat_MSA(2)*dist_rail_MSA(bs_draw_MSA(:,b))-temp_x_hat_MSA(5))+...
+                   exp(-temp_x_hat_MSA(3)*dist_water_MSA(bs_draw_MSA(:,b))-temp_x_hat_MSA(6))+...
+                   exp(-temp_x_hat_MSA(4)*dist_air_MSA(bs_draw_MSA(:,b))-temp_x_hat_MSA(7));     
+               
+               temp_total_trade = total_trade(bs_draw(:,b));
+               temp_total_trade_MSA = total_trade_MSA(bs_draw_MSA(:,b));
+               
+               [temp_beta1,temp_beta2] = fn_trebreg_112513(log(temp_total_trade),log(temp_total_trade_cost),[(ethnicity(bs_draw(:,b))),(language(bs_draw(:,b))),(migrant(bs_draw(:,b))),(samestate(bs_draw(:,b)))],FE1(bs_draw(:,b)),FE2(bs_draw(:,b)));
+               [temp_beta1_MSA,temp_beta2_MSA] = fn_trebreg_112513(log(temp_total_trade_MSA),log(temp_total_trade_cost_MSA),[(ethnicity_MSA(bs_draw_MSA(:,b))),(language_MSA(bs_draw_MSA(:,b))),(migrant_MSA(bs_draw_MSA(:,b))),(samestate_MSA(bs_draw_MSA(:,b)))],FE1_MSA(bs_draw_MSA(:,b)),FE2_MSA(bs_draw_MSA(:,b)));
+               
+               temp_theta = (sigma-1)/temp_beta1;
+               temp_theta_MSA = (sigma-1)/temp_beta1_MSA;
+               
+               temp_beta_eth = temp_beta2 ./ (1-sigma);
+               temp_beta_eth_MSA = temp_beta2_MSA ./ (1-sigma);
+               
+           % collecting the coefficients
+            bs_x_hat(b,:) = [temp_x_hat./temp_theta,temp_theta,temp_beta_eth'];
+            bs_x_hat_MSA(b,:) = [temp_x_hat_MSA./temp_theta_MSA,temp_theta_MSA,temp_beta_eth_MSA'];
+        end
+            
+        % standard errors
+            std_cost_road_var_hat = std(bs_x_hat(:,1) - cost_road_var_hat)
+            std_cost_rail_var_hat = std(bs_x_hat(:,2) - cost_rail_var_hat)
+            std_cost_water_var_hat = std(bs_x_hat(:,3) - cost_water_var_hat)
+            std_cost_air_var_hat = std(bs_x_hat(:,4) - cost_air_var_hat)
+            std_cost_rail_fix_hat = std(bs_x_hat(:,5) - cost_rail_fix_hat)
+            std_cost_water_fix_hat = std(bs_x_hat(:,6) - cost_water_fix_hat)
+            std_cost_air_fix_hat = std(bs_x_hat(:,7) - cost_air_fix_hat)
+            std_theta_hat = std(bs_x_hat(:,8) - theta_hat)
+            std_theta_eth_hat = std(bs_x_hat(:,9) - beta_ethnicity(1))
+            std_theta_lang_hat = std(bs_x_hat(:,10) - beta_ethnicity(2))
+            std_theta_migrant_hat = std(bs_x_hat(:,11) - beta_ethnicity(3))
+            std_theta_samestate_hat = std(bs_x_hat(:,12) - beta_ethnicity(4))
+            
+        % standard errors for MSAs
+            std_cost_road_var_hat_MSA = std(bs_x_hat_MSA(:,1) - cost_road_var_hat_MSA)
+            std_cost_rail_var_hat_MSA = std(bs_x_hat_MSA(:,2) - cost_rail_var_hat_MSA)
+            std_cost_water_var_hat_MSA = std(bs_x_hat_MSA(:,3) - cost_water_var_hat_MSA)
+            std_cost_air_var_hat_MSA = std(bs_x_hat_MSA(:,4) - cost_air_var_hat_MSA)
+            std_cost_rail_fix_hat_MSA = std(bs_x_hat_MSA(:,5) - cost_rail_fix_hat_MSA)
+            std_cost_water_fix_hat_MSA = std(bs_x_hat_MSA(:,6) - cost_water_fix_hat_MSA)
+            std_cost_air_fix_hat_MSA = std(bs_x_hat_MSA(:,7) - cost_air_fix_hat_MSA)
+            std_theta_hat_MSA = std(bs_x_hat_MSA(:,8) - theta_hat_MSA)
+            std_theta_eth_hat_MSA = std(bs_x_hat_MSA(:,9) - beta_ethnicity_MSA(1))
+            std_theta_lang_hat_MSA = std(bs_x_hat_MSA(:,10) - beta_ethnicity_MSA(2))
+            std_theta_migrant_hat_MSA = std(bs_x_hat_MSA(:,11) - beta_ethnicity_MSA(3))
+            std_theta_samestate_hat_MSA = std(bs_x_hat_MSA(:,12) - beta_ethnicity_MSA(4))
+            
+        % observations
+            sum(frac_road>0)
+            sum(frac_rail>0)
+            sum(frac_water>0)
+            sum(frac_air>0)
+            sum(isfinite(frac_road))
+            
+        % observations for MSAs
+            sum(frac_road_MSA>0)
+            sum(frac_rail_MSA>0)
+            sum(frac_water_MSA>0)
+            sum(frac_air_MSA>0)
+            sum(isfinite(frac_road_MSA))
+            
+%% Saving
+    clear t_*
+    clear temp*
+    save msa_est_112513.mat
+    
+   
