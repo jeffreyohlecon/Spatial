@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.19)  14 JAN 2025 15:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.19)  14 JAN 2025 16:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -172,22 +172,21 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 )) [1
 
-{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2]
-Overfull \hbox (4.2506pt too wide) in paragraph at lines 119--121
+{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2] [3]
+Overfull \hbox (4.2506pt too wide) in paragraph at lines 140--142
 \OT1/cmr/m/n/10 Climate change may have dis-tri-bu-tional con-se-quences on com-mut-ing costs: places
  []
 
-[3]
-<img/cardeaths.jpeg, id=23, 1129.21875pt x 1140.26pt>
+<img/cardeaths.jpeg, id=22, 1129.21875pt x 1140.26pt>
 File: img/cardeaths.jpeg Graphic file (type jpg)
 <use img/cardeaths.jpeg>
-Package pdftex.def Info: img/cardeaths.jpeg  used on input line 128.
+Package pdftex.def Info: img/cardeaths.jpeg  used on input line 149.
 (pdftex.def)             Requested size: 172.5pt x 174.18083pt.
- [4 <./img/cardeaths.jpeg>] (./writeup.bbl
+[4] [5 <./img/cardeaths.jpeg>] (./writeup.bbl
 
 Package natbib Warning: Empty `thebibliography' environment on input line 8.
 
-) [5] (./writeup.aux)
+) [6] (./writeup.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -202,10 +201,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  57i,6n,65p,423b,239s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on writeup.pdf (5 pages, 613651 bytes).
+Output written on writeup.pdf (6 pages, 614863 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 85 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
