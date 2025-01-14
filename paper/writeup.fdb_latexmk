@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex writeup"] 1736465553.69378 "writeup.aux" "writeup.bbl" "writeup" 1736465605.79943 0
+["bibtex writeup"] 1736891223.28615 "writeup.aux" "writeup.bbl" "writeup" 1736891442.94746 0
   "./references.bib" 1736458524.34242 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "writeup.aux" 1736465605.59833 2074 b89330f236af166e0b24e4147f6d291e "pdflatex"
+  "writeup.aux" 1736891442.73353 2495 3db85dfe2a6ba61bbd6fb17b01ccf165 "pdflatex"
   (generated)
   "writeup.bbl"
   "writeup.blg"
   (rewritten before read)
-["pdflatex"] 1736465605.21939 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1736465605.79957 0
-  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1736465605.01496 8993 429e5835077e7c578e2b19301af2683b ""
+["pdflatex"] 1736891442.34336 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1736891442.94759 0
+  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1736891442.11642 9665 87d166e3d766eca2a9283b86412677f1 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -67,9 +67,10 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1732026843.74287 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732026737 8221435 f74261876c5513771505f21185b529a0 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "writeup.aux" 1736465605.59833 2074 b89330f236af166e0b24e4147f6d291e "pdflatex"
-  "writeup.bbl" 1736465553.78626 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
-  "writeup.tex" 1736465605.01496 8993 429e5835077e7c578e2b19301af2683b ""
+  "img/cardeaths.jpeg" 1736869279.72173 461572 ea5f95838cf941a23278cedaca3febfc ""
+  "writeup.aux" 1736891442.73353 2495 3db85dfe2a6ba61bbd6fb17b01ccf165 "pdflatex"
+  "writeup.bbl" 1736891223.37111 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
+  "writeup.tex" 1736891442.11642 9665 87d166e3d766eca2a9283b86412677f1 ""
   (generated)
   "writeup.aux"
   "writeup.log"
