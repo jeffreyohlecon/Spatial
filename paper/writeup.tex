@@ -39,7 +39,7 @@
     \item Yulia: Interested in counterfactuals part of coding. Curious about theory. Experience about writing / likes writing. 
 \end{enumerate}
 
-\subsection{ for next meeting, Jan 17 }
+\subsection{For next meeting, Jan 17}
 \begin{enumerate}
     \item Read model / counterfactuals of Monte et al in detail enough 
     \item In the Esteban choose your model 
@@ -141,7 +141,7 @@ Climate change may have distributional consequences on commuting costs:
 places like Florida may see more precipitation. Places like Chicago may see fewer snowy days [citation needed]
 \subsubsection{Idea 6: Zoning in car cities vs walkable cities}
 
-\subsubsection{Idea 7: Distributional Efects of parking requirements}
+\subsubsection{Idea 7: Distributional Effects of parking requirements}
 Maybe minimum parking requirements in business areas let fewer people live in the city, but lowers commute times for the people that do commute.
 \subsubsection{Idea 8: Car safety and commuting}
 \begin{figure}
@@ -186,10 +186,65 @@ your model.
 \item 
 \end{enumerate}
 
-\subsection{Simplifications to Monte et al}
+\subsubsection{Simplifications to Monte et al}
 \begin{enumerate}
 \item do we need monopolistic competition or would CRS be easier? 
 \item honestly hard to get a much simpler model than this if you want trade in goods and commuting. Good job Esteban.
+\end{enumerate}
+
+\subsubsection{Monte et al and the Data}
+We might be able to not know some of these with Exact-Hat magic. I will try to note that if so.
+I am also sometimes being a little vague when I'm talking about model vs. data, sorry.
+
+Structural parameters
+\begin{enumerate}
+\item $\alpha$, Cobb Douglas weight on consumption goods
+\item $\epsilon$ dispersion of amenities
+\item $\sigma$ CES Elasticity of Substitution
+\item $F$ fixed cost of production (maybe?)
+\end{enumerate}
+Calibrated parameters
+\begin{enumerate}
+\item $\kappa_{ni}$, commuting costs
+\item $d_{ni}$ goods trade cost
+\item $A_i$ productivity vector
+\item $B_{ni}$ exogenous amenities from living in $n$ and working in $i$ (why have this be a matrix? can we simplify this? maybe we're underidentified if so)
+\end{enumerate} 
+
+Equilibrium objects
+%Quantities Taken from the Data /  Estimating Equations ?...
+
+Note in this model, $i$ is where you work, $n$ is where you live.
+\begin{enumerate}
+\item $H_n$ housing stock
+\item $L_i$ labor force
+\item $R_n$ residents [note, having an $R$ distinct from $L$ is what makes this a commuting model!]
+\item Wages $w_i$
+\end{enumerate}
+
+The below can be expressed using all of the above (I would call them ``derived equilibrium objects'')
+\begin{enumerate}
+\item $M_i$ varieties produced
+\item $P_n$ price index
+\item $Q_n$ price of land
+\item $\lambda_{ni}$ probability of working in $i$ and living in $n$ (unconditional probability), there are some nice eqm objects
+\item $\pi_{ni}$ share of location $n$ expenditure on goods produced in $i$
+\item $\bar v_n$ average residential income (differs from wages due to commuting)
+\end{enumerate}
+
+\subsubsection{Taking the model to the data}
+
+
+\begin{enumerate}
+    \item We basically have data on $R_n$, $L_i$, $\bar v_n$, 
+    \item While we don't have $\pi_{ni}$ , we have a 123x123 matrix of CFS regions, and we allocate the deficit for each CFS region across the countries within that region according to their shares of the CFS region's income
+\item  We are going to calibrate $A_i$, $d_{ni}$, $\kappa_{ni}$ to match wages, commuting flows, and populations.
+\end{enumerate}
+
+
+Solving for $A_i$
+\begin{enumerate}
+\item Can get a system of $N$ equations N unknown (wages, employment, residents, avg residential income and trade deficits are or computed fairly immediately from data)
 \end{enumerate}
 
 \section{Data and Estimation}

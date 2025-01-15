@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex writeup"] 1736899948.98849 "writeup.aux" "writeup.bbl" "writeup" 1736899956.68721 0
+["bibtex writeup"] 1736975062.83249 "writeup.aux" "writeup.bbl" "writeup" 1736975121.82368 0
   "./references.bib" 1736458524.34242 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "writeup.aux" 1736899956.42038 2986 645b5320e354e6bc1ce82ab16c6826c4 "pdflatex"
+  "writeup.aux" 1736975121.61134 3238 fd7c2a38c646d96d0efbedffccb492f8 "pdflatex"
   (generated)
   "writeup.bbl"
   "writeup.blg"
   (rewritten before read)
-["pdflatex"] 1736899955.8249 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1736899956.68736 0
-  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1736899955.64081 12165 20557007be5aab2802993954db0ec27a ""
+["pdflatex"] 1736975121.21687 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1736975121.82387 0
+  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1736975120.98336 14517 1ed436f83183b3c3c62ded5f0821132a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -70,9 +70,9 @@
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732026737 8221435 f74261876c5513771505f21185b529a0 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
   "img/cardeaths.jpeg" 1736869279.72173 461572 ea5f95838cf941a23278cedaca3febfc ""
-  "writeup.aux" 1736899956.42038 2986 645b5320e354e6bc1ce82ab16c6826c4 "pdflatex"
-  "writeup.bbl" 1736899949.07593 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
-  "writeup.tex" 1736899955.64081 12165 20557007be5aab2802993954db0ec27a ""
+  "writeup.aux" 1736975121.61134 3238 fd7c2a38c646d96d0efbedffccb492f8 "pdflatex"
+  "writeup.bbl" 1736975062.92272 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
+  "writeup.tex" 1736975120.98336 14517 1ed436f83183b3c3c62ded5f0821132a ""
   (generated)
   "writeup.aux"
   "writeup.log"
