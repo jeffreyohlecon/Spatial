@@ -39,7 +39,7 @@
     \item Yulia: Interested in counterfactuals part of coding. Curious about theory. Experience about writing / likes writing. 
 \end{enumerate}
 
-\subsection{For next meeting, Jan 17}
+\subsection{ for next meeting, Jan 17 }
 \begin{enumerate}
     \item Read model / counterfactuals of Monte et al in detail enough 
     \item In the Esteban choose your model 
@@ -137,11 +137,13 @@ Does this impose a quantitatively important externality on commuting costs, by s
 In a complete paper, we would endogenize crime, by also examining how available commuting influences crime, as well. 
 
 \subsubsection{Idea 5: Weather, Commuting Costs, and Climate Change}
-Climate change may have distributional consequences on commuting costs:
+Climate change may have 
+
+distributional consequences on commuting costs:
 places like Florida may see more precipitation. Places like Chicago may see fewer snowy days [citation needed]
 \subsubsection{Idea 6: Zoning in car cities vs walkable cities}
 
-\subsubsection{Idea 7: Distributional Effects of parking requirements}
+\subsubsection{Idea 7: Distributional Efects of parking requirements}
 Maybe minimum parking requirements in business areas let fewer people live in the city, but lowers commute times for the people that do commute.
 \subsubsection{Idea 8: Car safety and commuting}
 \begin{figure}
@@ -174,7 +176,7 @@ al. (2018). If you want to be more creative, feel free to select components from
 sure you include only the necessary elements related to your proposed mechanisms.
 Importantly, please be aware of the time and feasibility constraints when specifying
 your model.
-\subsection{Mapping Monte to Redding Rossi Hansberg 2017}
+\subsection{Mapping Monte et al to Redding Rossi Hansberg 2017}
 \begin{enumerate}
 \item 2.1 - Preferences: Love of Variety (CES), Single Sector, Exogenous Amenities, Fixed Land (enters into utility), Idiosyncratic Preferences
 \item 2.2 - Increasing Returns (kinda. TFP is constant, but there's a fixed cost), Exogenous productivity differences, No input-output linkages, No fixed factors in production (only labor)
@@ -198,15 +200,16 @@ I am also sometimes being a little vague when I'm talking about model vs. data, 
 
 Structural parameters
 \begin{enumerate}
-\item $\alpha$, Cobb Douglas weight on consumption goods
-\item $\epsilon$ dispersion of amenities
-\item $\sigma$ CES Elasticity of Substitution
-\item $F$ fixed cost of production (maybe?)
+\item $\alpha$, Cobb Douglas weight on consumption goods, 60\%, taken from the BEA (rest is housing)
+\item $\epsilon$ dispersion of amenities (estimate later, at 3.3)
+\item $\sigma$ CES Elasticity of Substitution = 4 (central value in literature)
+\item $F$ fixed cost of production (maybe? we never seem to actually need this so I guess it gets exact-hatted out or cancels with itself or something)
 \end{enumerate}
 Calibrated parameters
 \begin{enumerate}
+\item Wages $w_i$ (totally exogenous in this model, not even calibrated, I think - we just take the county mean from the data and that's our wage vector)
+\item $d_{ni}$ goods trade cost (compute this as a detrministic function of distance a la Allen Arkolakis 2014)
 \item $\kappa_{ni}$, commuting costs
-\item $d_{ni}$ goods trade cost
 \item $A_i$ productivity vector
 \item $B_{ni}$ exogenous amenities from living in $n$ and working in $i$ (why have this be a matrix? can we simplify this? maybe we're underidentified if so)
 \end{enumerate} 
@@ -219,12 +222,11 @@ Note in this model, $i$ is where you work, $n$ is where you live.
 \item $H_n$ housing stock
 \item $L_i$ labor force
 \item $R_n$ residents [note, having an $R$ distinct from $L$ is what makes this a commuting model!]
-\item Wages $w_i$
 \end{enumerate}
 
 The below can be expressed using all of the above (I would call them ``derived equilibrium objects'')
 \begin{enumerate}
-\item $M_i$ varieties produced
+\item $M_i = L_i/(\sigma F)$ varieties produced
 \item $P_n$ price index
 \item $Q_n$ price of land
 \item $\lambda_{ni}$ probability of working in $i$ and living in $n$ (unconditional probability), there are some nice eqm objects
@@ -241,11 +243,50 @@ The below can be expressed using all of the above (I would call them ``derived e
 \item  We are going to calibrate $A_i$, $d_{ni}$, $\kappa_{ni}$ to match wages, commuting flows, and populations.
 \end{enumerate}
 
+Parameterizing $d_{ni}$ (I say parameterizing because there is no economics here, just geography and math)
+This is more in the line of Allen Arkolakis 2014 where you calculate trade costs than the Regional Sector Model where you back out trade costs.
+
+\begin{enumerate}
+\item $(d_{ni})^{1-\sigma} = dist_{ni}^{-\psi (1-\sigma)} $ (the $\tilde e$ thing turns out not to matter I think)
+\item Since we take $\sigma$ from the lit. all we need to do is calc $\psi$ and get some data on distances.
+\item we can do that using a gravity regression - of trade flows onto destination and origin fixed effects, and distance. The parameter on distance is going to be 
+$-(\sigma-1)\psi$
+\item They get $-1.29 = -(\sigma-1)\psi$ so $\psi = 0.43$. Probably good to make sure we get this same thing with their data !! \textcolor{red}{Validation Check}
+\item Okay, so we have $d_{ni}$
+\end{enumerate}
+\textcolor{red}{It's a bit buried, but I believe this means symmetric trade costs! (as long as their distance measure is symmetric)}
 
 Solving for $A_i$
 \begin{enumerate}
-\item Can get a system of $N$ equations N unknown (wages, employment, residents, avg residential income and trade deficits are or computed fairly immediately from data)
+\item Can get a system of $N$ equations N unknowns ,eq (16) in the paper,  (wages, employment, residents, avg residential income and trade deficits are or computed fairly immediately from data)
+\item Computationally, we would like to do a contraction mapping thing right? But I don't know that it is a contraction..They give the excess demand equation in the appendix. 
 \end{enumerate}
+
+Onto commuting stuff... we can solve for $\lambda_{ni}$ as $N^2$ system of equation with same number of unknowns.
+
+
+The thing we are gonna be solving for is $\mathcal{B}_{ni} = B_{ni}\kappa_{ni}^{-\epsilon}$ (I am guessing we cannot identify $\kappa$ (distance) and $B$ (amenities) separately)
+
+
+
+First we need to estimate more parameters though!
+
+We are going to parameterize $\kappa_{ni}$ as a function of distance $(dist)^{-\phi}$, like we did with goods costs before but with another parameter $\phi$ instead of $\psi(\sigma-1)$. This will let us recover $\epsilon$ in a 2-step process. 
+
+\begin{enumerate}
+\item Estimate $\phi$ with a gravity regression (they get $\phi = 4.43$) (B.74 in appendix)
+ \item Then I guess using $\phi$ and some features of their model compute $\epsilon=3.3$ in another regression (B.75 in appendix)
+\end{enumerate}
+
+Then you use $R_n$, $H_n$, $v_n$, $w_n$,  $\pi_{nn}$ (don't need the whole matrix!), $L_n$
+to solve for $\lambda_{ni}$.
+\subsubsection{How do counterfactuals work / Exact-Hat Notation }
+
+
+(from shock to commuting costs,they say what they assume is held fixed that permits this eqn to work)
+\begin{equation}
+\hat{U} = \left(\frac{1}{\tilde{\lambda}_{ii}}\right)^{\frac{1}{\epsilon}} \left(\frac{1}{\tilde{\pi}_{ii}}\right)^{\frac{\alpha}{\sigma-1}} \left(\frac{\hat{w}_i}{\hat{v}_i}\right)^{1-\alpha} \frac{\hat{L}_i^{\frac{\alpha}{\sigma-1}}}{\hat{R}_i^{1-\alpha}}
+\end{equation}
 
 \section{Data and Estimation}
 \label{sec:data}

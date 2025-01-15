@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex writeup"] 1736975062.83249 "writeup.aux" "writeup.bbl" "writeup" 1736975121.82368 0
-  "./references.bib" 1736458524.34242 0 d41d8cd98f00b204e9800998ecf8427e ""
+["bibtex writeup"] 1736982043.07233 "writeup.aux" "writeup.bbl" "writeup" 1736982043.98164 0
+  "./references.bib" 1736977713.67188 767 daac07b32a7bf778bda29f5ab3e7aa50 ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "writeup.aux" 1736975121.61134 3238 fd7c2a38c646d96d0efbedffccb492f8 "pdflatex"
+  "writeup.aux" 1736982043.74968 3392 fffde4765d22c6267a72630ddb151af5 "pdflatex"
   (generated)
   "writeup.bbl"
   "writeup.blg"
   (rewritten before read)
-["pdflatex"] 1736975121.21687 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1736975121.82387 0
-  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1736975120.98336 14517 1ed436f83183b3c3c62ded5f0821132a ""
+["pdflatex"] 1736982043.18018 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1736982043.98179 0
+  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1736982042.16885 17620 035fac34c1ec980ecd7a0c60edd84970 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -32,16 +32,21 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1248133631 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1248133631 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb" 1248133631 32298 c6d25bb16d1eac01ebdc6d7084126a1e ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1248133631 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1248133631 37912 77d683123f92148345f3fc36a38d9ab1 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1248133631 31809 8670ca339bf94e56da1fc21c80635e2a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1248133631 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb" 1215737283 138258 6525c253f16cededa14c7fd0da7f67b2 ""
   "/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty" 1686341992 2222 499d61426192c39efd8f410ee1a52b9c ""
@@ -70,9 +75,9 @@
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732026737 8221435 f74261876c5513771505f21185b529a0 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
   "img/cardeaths.jpeg" 1736869279.72173 461572 ea5f95838cf941a23278cedaca3febfc ""
-  "writeup.aux" 1736975121.61134 3238 fd7c2a38c646d96d0efbedffccb492f8 "pdflatex"
-  "writeup.bbl" 1736975062.92272 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
-  "writeup.tex" 1736975120.98336 14517 1ed436f83183b3c3c62ded5f0821132a ""
+  "writeup.aux" 1736982043.74968 3392 fffde4765d22c6267a72630ddb151af5 "pdflatex"
+  "writeup.bbl" 1736982043.17804 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
+  "writeup.tex" 1736982042.16885 17620 035fac34c1ec980ecd7a0c60edd84970 ""
   (generated)
   "writeup.aux"
   "writeup.log"
