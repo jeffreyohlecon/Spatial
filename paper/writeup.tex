@@ -380,6 +380,36 @@ variables do you need? How do you access them? How do you plan to estimate the
 model? For parameters that you will calibrate, justify your choices. For parameters
 that you will estimate, explain your strategy.
 
+\subsection{Notes on what Monte et al do - -Jeffrey}
+This paper mostly uses 2007 data. We could probably update it, or could not if we want to be able to compare numbers for sanity.
+Section D of the Appendix is amazing.
+Commodity Flow Survey (CFS)
+
+- Bilateral trade between 123 CFS regions (123 x 123) $\implies$ 123-long vector of trade deficits, which are then allocated to the 3,111 counties in a particular way (pro rata share of residential income). (why, only need to allocate deficits, rest stays there? )
+
+- Bilateral distance shipped - ?? used for why? I think it's just some random Appendix analysis. [As a check on this specification, we aggregate the model’s predictions for trade between counties within pairs of CFS regions, and compare these predictions to the data on CFS bilateral trade] (why can't we just use county centroids)... they don't need to for calibrating $\psi$ .. % might only be used in calibrating $\psi$.. or might not be used at all. ``We use the model’s gravity equation and observed bilateral trade between CFS regions to estimate the composite parameter $-\psi(\sigma-1)$'' .. or might just be used as a check (As a check on this specification, we aggregate the model’s predictions for trade between counties within pairs of CFS regions, and compare these predictions to the data on CFS bilateral trad)
+
+American Community Survey (ACS)
+
+- Commuting probabilities between counties (3111 x 3111) .. 
+Bureau of Economic Analysis
+
+- Employment by workplace county (3111 vector) $\implies$ (multiplying / dividing by commuting probabilities, and Residents of each county) [This is important! We do not directly use data on number of residents of each county , just number of workers. This ensures internal consistency of Num Residents and Num Workers.].. They drop any commute over 120 km. 
+
+
+- Wages by workplace county (3111 vector) (again, wages by where they work, not where they live)
+
+GIS data
+
+- County maps (I think this might be for pictures, but do we need this?)
+
+..... 
+
+Questions I have on data
+\begin{enumerate}
+    \item
+\end{enumerate}
+
 \section{Counterfactual}
 \textbf{It seems like this is the area for creativity. We can keep the model itself as in Monte}
 \label{sec:counterfactual}
