@@ -149,6 +149,16 @@ INPUT /usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
+INPUT ./img/strict.png
+INPUT ./img/strict.png
+INPUT ./img/strict.png
+INPUT ./img/strict.png
+INPUT ./img/strict.png
+INPUT ./img/friendly.png
+INPUT ./img/friendly.png
+INPUT ./img/friendly.png
+INPUT ./img/friendly.png
+INPUT ./img/friendly.png
 INPUT ./img/cardeaths.jpeg
 INPUT ./img/cardeaths.jpeg
 INPUT ./img/cardeaths.jpeg

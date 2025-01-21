@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex writeup"] 1737472259.63992 "writeup.aux" "writeup.bbl" "writeup" 1737472320.17418 0
+["bibtex writeup"] 1737473032.42194 "writeup.aux" "writeup.bbl" "writeup" 1737473033.34316 0
   "./references.bib" 1736977713.67188 767 daac07b32a7bf778bda29f5ab3e7aa50 ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "writeup.aux" 1737472319.94139 4290 fc24513640c6d60fe9205a3a2b662355 "pdflatex"
+  "writeup.aux" 1737473033.10873 4725 8d98893176a13d276ddea0d8afbae9bb "pdflatex"
   (generated)
   "writeup.bbl"
   "writeup.blg"
   (rewritten before read)
-["pdflatex"] 1737472319.28973 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1737472320.17432 0
-  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1737472319.05414 20377 6854d4432c5c848f4d0889d2b41417aa ""
+["pdflatex"] 1737473032.51167 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" "writeup.pdf" "writeup" 1737473033.34329 0
+  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/writeup.tex" 1737473031.21306 21789 1886004383ac1723bddece21cf2259c0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -103,10 +103,12 @@
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732026737 8221435 f74261876c5513771505f21185b529a0 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
   "img/cardeaths.jpeg" 1736869279.72173 461572 ea5f95838cf941a23278cedaca3febfc ""
-  "writeup.aux" 1737472319.94139 4290 fc24513640c6d60fe9205a3a2b662355 "pdflatex"
-  "writeup.bbl" 1737472259.76366 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
-  "writeup.out" 1737472319.94202 5246 9961afbb858d17db5da1a4b7fdb10704 "pdflatex"
-  "writeup.tex" 1737472319.05414 20377 6854d4432c5c848f4d0889d2b41417aa ""
+  "img/friendly.png" 1737472865.26596 23299 1d222a277cb151e3463515d18da0988c ""
+  "img/strict.png" 1737472898.47057 23993 4ace10ca92445302611bb39e98d140f9 ""
+  "writeup.aux" 1737473033.10873 4725 8d98893176a13d276ddea0d8afbae9bb "pdflatex"
+  "writeup.bbl" 1737473032.50962 275 de5ffaf5b665b622658d80bed97ba2a5 "bibtex writeup"
+  "writeup.out" 1737473033.10959 5507 8792abf241b0a26bc5c2cd8f6bded7b1 "pdflatex"
+  "writeup.tex" 1737473031.21306 21789 1886004383ac1723bddece21cf2259c0 ""
   (generated)
   "writeup.aux"
   "writeup.log"

@@ -110,7 +110,7 @@ Important things here:
 \end{enumerate}
 
 
-\textbf{Data and feasibility}
+\subsubsection{Data and Feasibility for SelfDriving}
 Goal here is to justify how much to reduce $\kappa_{ni}$ in places where self-driving cars are reduced.
 
 Remember.
@@ -122,7 +122,7 @@ We would have to choose a different parameterization.
 The simplest possible change would be to just assume everyone commutes by driving, and include a ``switching parameter'' for self-driving:
 
 
-
+Assuming 100\% of people commute by car
 $$\kappa^{SelfDrive}_{ni} \propto ( (U_{commute}/U_{TV} )  dist_{ni} ) ^{-\phi}$$
 
 $$\kappa^{NoSelfDrive}_{ni} \propto ( dist_{ni} ) ^{-\phi}$$
@@ -145,14 +145,38 @@ A more sophisticated analysis would:
 
 Doing the last one seems feasible and would just modify our calc to be as follows:
 
+Assuming $s_{driving}$ \% of people commute by car
+$$\kappa^{SelfDrive}_{ni} \propto ( [s_{driving}\frac{U_{commute}}{U_{TV}}  + (1-s_{driving}) (1) ] dist_{ni} ) ^{-\phi}$$
+
+So, of course, if $s_{driving}=0$ we don't modify that county-pair's commute costs at all. 
 
 
 Counterfactual:
-
+ ``Adoption'' here just means what percent of the way we reduce their commute costs to the self-driving level. (see above)
+ Since regulation is at the state-level we need to take care.
+ %Or we could reduce it based on the average level of regulation in the two-state pairs.
+ In reality, it probably will be the more regulated state for any county-pair, which matter.
+ So probably we should just use the max. regulation of every county pair to determine how much to reduce commute costs. 
 \begin{enumerate}
-\item Easiest is to assume Self-Driving is fully adopted in Arizona, California, Texas, and Florida (all county-pairs fully in those states use $\kappa^{self-drive}$, every other one is not modified)
-\item More interesting would be a gradient of adoption. We could impose that the most friendly fully adopts, and least friendly doesn't adopt at all (0\%). . I got a 50 state list from ChatGPT which we could use for starters.
+    \item Luckily, the way counties work is they're only in one state (impossible to have a county cross state borders)
+\item Easiest is to assume Self-Driving is fully adopted in Arizona, California, Texas, and Florida (all county-pairs fully adopt in those states i.e. use $\kappa^{self-drive}$, every other county pair is not modified)
+\item More interesting would be a gradient of adoption. We could impose that the most friendly state fully adopts (100\%), as above, and least friendly doesn't adopt at all (0\%). . I got a 50 state list from ChatGPT (see figures) which we could use for starters, in the data folder. It accords with intuition: CA, TX, FL, NV, AZ all either highest or second-highest rating.
+
 \end{enumerate}
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{img/strict.png}
+        \caption{Strictest / lowest adoption}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/friendly.png}
+    \caption{Friendliest / highest adoption}
+\end{figure}
+
+
 
 \subsubsection{Idea 2: Incorporating car ownership}
 Who owns cars, where, and why?
