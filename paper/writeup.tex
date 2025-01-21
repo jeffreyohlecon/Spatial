@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{hyperref}
 \usepackage{natbib}
 \bibliographystyle{plainnat}
 \title{Our Spatial Paper}
@@ -108,6 +109,51 @@ Important things here:
 \item Will self-driving have a homogeneous effect on all $\kappa_{ni}$? Probably should only apply to certain node-pairs where people are driving.
 \end{enumerate}
 
+
+\textbf{Data and feasibility}
+Goal here is to justify how much to reduce $\kappa_{ni}$ in places where self-driving cars are reduced.
+
+Remember.
+
+$$\kappa_{ni} \propto dist_{ni}^{-\phi}$$
+
+We would have to choose a different parameterization. 
+
+The simplest possible change would be to just assume everyone commutes by driving, and include a ``switching parameter'' for self-driving:
+
+
+
+$$\kappa^{SelfDrive}_{ni} \propto ( (U_{commute}/U_{TV} )  dist_{ni} ) ^{-\phi}$$
+
+$$\kappa^{NoSelfDrive}_{ni} \propto ( dist_{ni} ) ^{-\phi}$$
+
+where we get $U_{self drive}$ and $U_{ TV}$ from the Day Reconstruction Method . People rates
+
+Watching TV with 4.19 positive affect, 0.58 negative affect. Commuting as 3.45 positive affect, 0.89 negative affect.
+
+$$\frac{3.45 - 0.89}{ 4.19-0.58} = 71\%$$
+(A lot of assumptions may neeed to assume a cardinal interpretation of these ordinal rankings...)
+So commuting costs are lowered to  $\approx 71\%$ of their former value.
+
+A more sophisticated analysis would:
+
+\begin{enumerate}
+\item Separate psychological and monetary costs of commuting (depreciation on car, gas.) - probably not too important since monetary costs wouldn't be changing in the counterfactual. Overall, not including this OVERESTIMATES the decline in commute costs. 
+\item Recognize Yulia's point that people also probably *get there faster* (not just get there while watching TV). Not including this UNDERESTIMATES the decline in commute costs. 
+\item Not assume 100\% of people drive, and instead base this on data on commute modes, given by the ACS table (see Github data folder). Assuming 100\% OVERSTIMATES the decline in commute costs. However, to get pretty close to this we could use the population-weighted average, which seems to be about 77\%. \href{https://www2.census.gov/library/publications/2024/demo/acsbr-018.pdf}{source}. Denote this $s_{driving}$
+\end{enumerate}
+
+Doing the last one seems feasible and would just modify our calc to be as follows:
+
+
+
+Counterfactual:
+
+\begin{enumerate}
+\item Easiest is to assume Self-Driving is fully adopted in Arizona, California, Texas, and Florida (all county-pairs fully in those states use $\kappa^{self-drive}$, every other one is not modified)
+\item More interesting would be a gradient of adoption. We could impose that the most friendly fully adopts, and least friendly doesn't adopt at all (0\%). . I got a 50 state list from ChatGPT which we could use for starters.
+\end{enumerate}
+
 \subsubsection{Idea 2: Incorporating car ownership}
 Who owns cars, where, and why?
 
@@ -155,30 +201,11 @@ Maybe minimum parking requirements in business areas let fewer people live in th
 
 
 \subsubsection{Yulia's Ideas}
-
-Research ideas – spatial economics 
-1.	Natural disasters that disrupted commuting infrastructure. 
--	Hurricane Katrina (2005): Severe damage to roads, bridges, and public transit systems. Key infrastructure, such as the Interstate 10 Twin Spans bridge, was destroyed, disrupting commuting patterns for months. Also, it forced massive migration, with many residents relocating permanently.
--	Floodings: Mississippi River Floods (2011), Hurricane Harvey (2017), 2019 Midwest Floods. 
--	Winter/extreme winds might also be disrupting commuting costs. 
--	https://msc.fema.gov/portal/search
--	https://www.fema.gov/data-visualization/historical-flood-risk-and-costs?utm_source=chatgpt.com 
--	https://hazards.fema.gov/nri/map 
--	https://www.fema.gov/data-visualization/historical-flood-risk-and-costs
--	USGS Flood Inundation Mapper: https://fim.wim.usgs.gov/fim/ 
--	NOAA Past weather https://www.ncei.noaa.gov/access/past-weather/60615 
-2.	Housing voucher program: The HCV program enables low-income families to move to areas with better job opportunities, schools, and amenities. This might be reducing “spatial” inequality as well. [Vouchers often allow recipients to live closer to employment hubs, reducing commuting times and costs.] Voucher recipients contribute to local economies through spending on goods and services. 
--	https://hudgis-hud.opendata.arcgis.com/datasets/HUD::housing-choice-vouchers-by-tract/explore?location=41.833919%2C-87.619410%2C11.00&showTable=true 
--	https://www.hud.gov/program_offices/public_indian_housing/programs/hcv/mapping 
--	https://www.hud.gov/program_offices/public_indian_housing/programs/hcv/dashboard 
-•	Vouchers can provide a safety net for households affected by economic downturns or disasters, enabling relocation to less vulnerable areas. (1) & (2)?
-
-
+nat.  disasters, housing voichers
 \begin{enumerate}
 \item money costs
 \item time costs
 \item enjoyment of time ? 
-
 \end{enumerate}
 \subsubsection{Henrique}
 \begin{enumerate}
