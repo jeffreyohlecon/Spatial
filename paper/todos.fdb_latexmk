@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1737823328.71803 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex" "todos.pdf" "todos" 1737823329.2762 2
-  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex" 1737823327.64748 2752 f6afccd7a3e25ef0738a45c4d7baeaa7 ""
+["pdflatex"] 1737823542.31812 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex" "todos.pdf" "todos" 1737823543.01579 0
+  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex" 1737823542.0852 2753 b8cd119ed250517f5bbbfaeae61873e6 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -78,9 +78,9 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1732026843.74287 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732026737 8221435 f74261876c5513771505f21185b529a0 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "todos.aux" 1737823329.22719 182 f9c75b2b034a71866df7fc50376e35e4 "pdflatex"
-  "todos.out" 1737823329.07823 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "todos.tex" 1737823327.64748 2752 f6afccd7a3e25ef0738a45c4d7baeaa7 ""
+  "todos.aux" 1737823542.9549 182 f9c75b2b034a71866df7fc50376e35e4 "pdflatex"
+  "todos.out" 1737823542.81131 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "todos.tex" 1737823542.0852 2753 b8cd119ed250517f5bbbfaeae61873e6 ""
   (generated)
   "todos.aux"
   "todos.log"

@@ -104,6 +104,9 @@ INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/natbib/natbib.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/natbib/natbib.sty
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+INPUT ./todos.aux
+INPUT ./todos.aux
+INPUT todos.aux
 OUTPUT todos.aux
 INPUT /usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -113,6 +116,12 @@ INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.st
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+INPUT ./todos.out
+INPUT ./todos.out
+INPUT todos.out
+INPUT todos.out
+INPUT ./todos.out
+INPUT ./todos.out
 OUTPUT todos.out
 OUTPUT todos.pdf
 INPUT /usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map
