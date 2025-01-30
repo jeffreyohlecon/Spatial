@@ -73,12 +73,12 @@ While there is substantial uncertainty as to where AVs will be most adopted, and
 
 
 \section{Background and Diagnostic}
-Prompt:Why is the question or policy you want to examine
+\textit{Prompt:Why is the question or policy you want to examine
 important? Why is a quantitative spatial model the right tool to answer the question?
 Are there any particular features of the policy/economic environment that are impor-
 tant for the analysis? Feel free to focus on one or a few aspects that you want to study
 in depth and identify the underlying mechanisms, which will inform you about the key
-elements to be included in your model.
+elements to be included in your model.}
 
 
 
@@ -92,44 +92,69 @@ The gain from substituting to AVs should be especially large where rents are hig
 
 
 We thus note this technology will have varied impacts (i) on low-skill and high-skill agents, and in (ii) areas where the cost of housing is relatively high vs. low.
-This intuition is well-illustrated by the following 2x2 table:
+This intuition is well-illustrated by the following 2x2 table: \textcolor{red}{does it need to be 2x2 or would 1x2 be enough}
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|}
 \hline
  & High Skill & Low Skill \\ \hline
-High Rent & Unambig. Benefit from Declining Commute Costs &  \\ \hline
-Low Rent & Unambig. Benefit from Declining Commute Costs &  \\ \hline
+High Rent & Unambig. Benefit, Declining Commute Costs & Ambig.:  Wage decline (-), but declining commute costs (+)   \\ \hline
+Low Rent & Unambig. Benefit, Declining Commute Costs (but smaller than for high rent) & Ambig.:  Wage decline (-), but declining commute costs (+)   \\ \hline
 \end{tabular}
 \caption{Impact of AVs on different skill levels and places}
 \label{tab:impact_avs}
 \end{table}
 
 
-The key question we hope to begin answering is \textbf{how varied benefits, across skill-levels and space, will determine the winners and losers of this technology}.
+The key question we hope to begin answering is \textbf{how varied benefits, across skill-levels and space, will determine the winners and losers of this technology, and the spatial distribution of economic activity}.
 
-For now, we will capture this intuition in a reduced-form way, by 
+For tractability, we will start by capturing this intuition of the 2x2 table in a reduced-form way,  \textbf{by reducing bilateral commute costs proportionally to the population-weighted mean college-educated share of the pair. }
+
 
 \section{Model}
 
-
-\subsubsection{Simplifications}
-
-In this draft, we ....
-
-But in a future draft, we may consider XYZ
+We begin with the model of \citep{monte_commuting_2018}.
 
 
-\subsubsection{Taking the model to the data}
+
+
+\subsubsection{Simplifications and Tweaks}
+
+In a future draft, we may consider the following simplifications: 
+
+\begin{enumerate}
+\item removing trade
+\end{enumerate}
+
+In a future draft, we may consider the following extensions: 
+\begin{enumerate}
+\item  (i) heterogeneity: explicitly model high and low skill types
+ \item (ii) endogenize low-types' wages.
+\item (iii) consider the forward-looking decision of a household to purchase an A.V.
+\end{enumerate}
+
 
 
 \section{Data and Estimation}
+We use data on wages (based on place of work), commuting flows, distances, etc.
 
+
+
+Estimating $\psi$ \\
+Estimating $\phi$ \\ 
+Estimating $\epsilon$ \\
+Calculating productivity vector $A_i$ \\
+Calcualting aggregate bilateral amenities matrix $\mathcal{B}_{in}$ \\
 
 
 
 
 \section{Counterfactual}
+
+We take as our base economy the one with no AV adoption, and commuting costs are calibrated using existing flows.
+
+We then shock the economy by introducing varied adoption, based on the aggregate skill-level of the county pair.
+
 
 \section{Appendix}
 Painful proofs go here.
