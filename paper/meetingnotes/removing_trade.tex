@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage{xcolor}
+
+\title{Removing Trade}
+\author{Jeffrey Ohl}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% Your abstract goes here.
+\end{abstract}
+
+\section{Intuition}
+What would a model with commuting but without trade look like?
+
+Before writing down any math, what is the economic intuition of such an economy?
+
+It may be useful to think of this in a 2x2 . (note, none of this precludes migration - all these papers allow migration in the background)
+\begin{enumerate}
+\item No trade, no commuting - basically just comparing closed cities in 2x2s. Hsieh Moretti 2019. Parkhomenko 2023. etc
+\item Trade, no commuting - basically every spatial paper until Monte et al 2018, and the entire intl trade literature.
+\item Trade, commuting - Monte et al 2018, and subsequent literature
+\item No commuting, trade - this is what we want to do. Cities are closed to goods but open to people. The thought experiment here is if you think trade in goods is small, or unimportant, relative to trade in people.
+\end{enumerate}
+
+
+What is the role of heterogeneity in productivities now? It affects rent, and pulls people to commute there, but not goods. 
+We have to specify what units are self sufficient. all the goods that are produced in a workplace by $L_i$, are consumed by residents there, $R_i$
+We have to specify what equilibrium looks like. It involves people commuting to equalize their utilities. Commuting can still affect the price of goods by influencing how many people are working there. 
+We have to specify some mechanism to clear any quantities that aren't automatically cleared by trade. Deficits are still needed, I think.
+
+
+\section{Math}
+
+What terms would get dropped from the model? Obviously trade costs $d_{ni}$. 
+
+I think the only way for this to make sense is to have people consume stuff in residence. 
+
+We are basically going to be setting $\pi_{nn} = 1$ throughout and seeing where that takes us
+
+
+First, examine Eqn 7.
+This states:  for each city $i$ \textcolor{red}{note, later we allow deficits to match the data.}
+$$w_i L_i = \pi_{ii} \bar {v}_n R_n $$
+$$w_i L_i = \bar {v}_i R_i $$
+
+
+This says local expenditures (which include wages earned elsewhere) equals local wage of residents. 
+
+A perhaps intuitive re-expression is:
+
+$$\frac{w_i}{\bar{v}_i} = \frac{R_i}{L_i}$$
+
+That is, the wage to expenditure ratio in a city is equal to the residents to workers ratio.
+
+Notably, it is possible $R_i$ and $L_i$ differ, since there is commuting. 
+
+Then take this insight to Eqn 8 in Monte et al.
+We'll note, also, that $d_{nn}=1$ in any case.
+
+$$P_n = \frac{\sigma}{\sigma-1} ( \frac{L_n}{\sigma F})^{1/(1-\sigma)} \frac{1 w_n}{A_n}$$
+
+This maintains all of the same comparative statics as the original model, but there are now trade costs. 
+\begin{enumerate}
+    \item There is still a markup.
+    \item Places with more people working there still have lower prices (fixed cost / IRS).
+    \item Places with higher wages have higher prices.
+    \item Places with higher productivity have lower prices
+    \item Closing the economy generates an expected comparative static: the partial of $P_n$ w.r.t. $\pi_{nn}$ is positive, so prices rise.
+\end{enumerate}
+
+
+What isn't changed
+\begin{enumerate}
+\item Preferences (9)
+\item The decision of where to live and commute  (conditional on the new price index $P_n$) (10)
+\item Various derived quantities (11,12,13,14,15)
+\end{enumerate}
+
+\subsection{Definition of Equilibrium}
+General equilibrium is still given by
+$\{w_n, \bar v_n, Q_n, L_n, R_n, P_n \}$ and utility level $\bar U$. We have to solve:
+
+7 (income = expenditure), 14 (avg residential income), 5 (land market clearing) ,11 (workplace choice probabilities), 11 (resident choice probabilities) ,8 (price indices)
+
+\textcolor{red}{We show existence and uniqueness is inherited from Monte et al Appendix B3.. The intuition is that not part of those proofs rely on $\pi_{nn} \neq 1$ }
+
+\subsection{Taking things to the data, with trade.}
+Now taking things to the data. What happens to market clearing? 
+(16) Becomes simply
+
+$$w_i L_i =  \bar v_i R_i + D_i $$
+
+We solve for $A_i$ vector, but no longer for $\psi$... or trade flows $X$.
+
+Equation 17, the bilateral equation for commuting is the last thing we need to modoify here \textcolor{red}{I sort of doubt we can just replace all the $\pi_{rr}$ with 1 and be done here}
+.. recall.. the intermediate step here is just an EVT-I expression taking the ratio of utility in the commute-pair to the epsilon power, divided by utilty elsewhere.
+That basic fact is unchanged
+
+$$ \frac{U_{ni}^\epsilon }{\sum_{r \in N} \sum_{s \in N}  U_{rs}^{\epsilon}  }$$
+
+We then plug in relevant quantities
+
+$$ \frac{U_{ni}^\epsilon }{\sum_{r \in N} \sum_{s \in N}  U_{rs}^{\epsilon}  }$$
+
+where $Q_n  = (1-\alpha) \bar v_n R_n / H_n$ is observed / immediately constructed from  the data.
+
+.. end of the day, we still have this quantity, with just the earlier modification of how we express $P_n$ (it now only depends on local quantities)
+
+$$\lambda_{ni} = \frac{B_{ni} \left(\kappa_{ni}P_i^{\alpha}Q_i^{1-\alpha}\right)^{-\epsilon} w_i^{\epsilon}}{\sum_{r \in N} \sum_{s \in N} B_{rs} \left(\kappa_{rs}P_r^{\alpha}Q_r^{1-\alpha}\right)^{-\epsilon} w_s^{\epsilon}}$$
+
+
+\section{Recommendation}
+This was useful because it made me realize that most of the model's complexity is from commuting (which makes sense given the paper's title i guess..).
+
+You don't actually simplify that much by removing trade.  (and in some sense, commuting will adjust to the lack of trade .. I guess this could be a counterfactual? )
+
+It seems like you would want to use this version of the model if you think cities don't tend to trade with each other much (this is an empirical question!), or if you were missing data on goods flows, you might be able to still solve the model. 
+
+Clearly welfare should be lower when there's no trade. 
+
+I honestly think it would be interesting to solve the model in both ways. I don't think Monte et al convincingly argued that they needed trade to make their key point!
+
+From a ``class participation'' / grades perspective, I think it's worth including the above derivation to at least show we can do some theory and considered relaxing the Monte et al model. 
+
+
+
+\end{document}
