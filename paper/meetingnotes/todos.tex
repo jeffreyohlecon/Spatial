@@ -29,11 +29,11 @@
     \item Estimation: Estimate $\psi$ as they do in the paper (appendix B.5.)
     \item Assume $\sigma = 4$ as in paper
     \item Assume $1-\alpha = 0.4$ as in paper
-    \item Compute $d_{ni}$ given distances, $\psi$ and $\sigma$
-    \item Compute $A_i$ (system of $N = \approx 3000$ equations) as in (16) in the paper. Might require some clever computation step to make it not take a super long time.
+    \item \textbf{done} Compute $d_{ni}$ given distances, $\psi$ and $\sigma$
+    \item \textbf{done} Compute $A_i$ (system of $N = \approx 3000$ equations) as in (16) in the paper. Might require some clever computation step to make it not take a super long time.
     \item \textbf{up to here is not terribly bad}Estimate $\phi$ and $\epsilon$ as in appendix. 
-    \item Given $\lambda_{ni}$ $A_i$, $w_i$, $L_i$, $\bar v_i$, $R_n$, $\sigma$, $\alpha$ $\phi$, $\psi$, solve for the $3000x3000$ matrix $\mathcal{B}_{ni}$, as in (17) -- THIS WILL PROBABLY BE HARD BECAUSE IT REQUIRES SOLVING FOR 9 MILLION THINGS. SEE IF WE CAN DO A CONTRACTION OR IF THERE ARE HINTS IN THE APPENDIX
-    \item Determine counterfacutal values for $B_{ni}$, using Jeffrey's latex writeup
+    \item \textbf{We might not have to do this and can use exact hat} Given $\lambda_{ni}$ $A_i$, $w_i$, $L_i$, $\bar v_i$, $R_n$, $\sigma$, $\alpha$ $\phi$, $\psi$, solve for the $3000x3000$ matrix $\mathcal{B}_{ni}$, as in (17) -- THIS WILL PROBABLY BE HARD BECAUSE IT REQUIRES SOLVING FOR 9 MILLION THINGS. SEE IF WE CAN DO A CONTRACTION OR IF THERE ARE HINTS IN THE APPENDIX
+    \item \textbf{done} Determine counterfacutal values for $B_{ni}$, using Jeffrey's latex writeup
     \item Run the counterfactual using exact hat algebra (Appendix B2 gives pseudocode)  NOTE! Our counterfactual can be expressed as just reducing $B_{ni}$. everything else will be fixed
     \item This uses tattonement, so might take a long amount of computer time. ( I guess we're solving for 18 million changes) -- THIS WILL ALSO PROBABLY TAKE A LONG TIME
     \item  Report results in compelling ways from counterfactual. Probably tables, maps (using county shape files). 
@@ -51,9 +51,9 @@
 \section{Notes from Jan 26 Sunday morning chat}
 Before Friday 1/31: 
 Yulia: up to and including 11. (can skip 2) by end of day Friday. Let us know if you need help
-Jeffrey / Henrique: looking at modifying the model to drop trade entirely
-Jeffrey: Start on non-mathematical writing. (before Wednesday , maybe split with Henrique)
-
+Jeffrey / Henrique: looking at modifying the model to drop trade entirely \textbf{Jeffrey - done} 
+Jeffrey: Start on non-mathematical writing. (before Wednesday , maybe split with Henrique) \textbf{Jeffrey - added some stuff}
+ 
 After Friday:
 Henrique and Jeffrey finish counterfactual over next weekend. 
 

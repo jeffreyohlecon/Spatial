@@ -1,8 +1,8 @@
-PWD /Users/jeffreyohl/Documents/GitHub/Spatial/paper
+PWD /Users/jeffreyohl/Documents/GitHub/Spatial/paper/meetingnotes
 INPUT /usr/local/texlive/2024/texmf.cnf
 INPUT /usr/local/texlive/2024/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex
+INPUT /Users/jeffreyohl/Documents/GitHub/Spatial/paper/meetingnotes/todos.tex
 OUTPUT todos.log
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls

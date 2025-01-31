@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.19)  26 JAN 2025 11:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.19)  31 JAN 2025 14:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex
-(/Users/jeffreyohl/Documents/GitHub/Spatial/paper/todos.tex
+**/Users/jeffreyohl/Documents/GitHub/Spatial/paper/meetingnotes/todos.tex
+(/Users/jeffreyohl/Documents/GitHub/Spatial/paper/meetingnotes/todos.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
@@ -316,7 +316,12 @@ Package hyperref Info: Link coloring OFF on input line 14.
 
  [1
 
-{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2] [3] (./todos.aux)
+{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+Overfull \hbox (2.12894pt too wide) in paragraph at lines 36--37
+[]\OT1/cmr/bx/n/10 done \OT1/cmr/m/n/10 De-ter-mine coun-ter-fa-cu-tal val-ues for $\OML/cmm/m/it/10 B[]$\OT1/cmr/m/n/10 , us-ing Jef-frey's la-tex writeup 
+ []
+
+[2] [3] (./todos.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -326,14 +331,14 @@ Package rerunfilecheck Info: File `todos.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  10132 strings out of 474116
- 154405 string characters out of 5743681
+ 154444 string characters out of 5743681
  1943187 words of memory out of 5000000
  32348 multiletter control sequences out of 15000+600000
  563793 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,657b,541s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,670b,541s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on todos.pdf (3 pages, 115892 bytes).
+Output written on todos.pdf (3 pages, 118184 bytes).
 PDF statistics:
  100 PDF objects out of 1000 (max. 8388607)
  76 compressed objects within 1 object stream
