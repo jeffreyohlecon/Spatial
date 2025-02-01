@@ -30,49 +30,64 @@ idea, you can choose from the following list of topics}
 
 
 \textcolor{red}{paste in jeffrey's motivation from erh meeting}
-We are going to examine the impact of the introduction of autonomous vehicles (AVs) on the spatial distribution of economic activity, and welfare.
+We are going to examine the impact of the introduction of autonomous vehicles (AVs) on the spatial distribution of economic activity. 
 
-While there is substantial uncertainty as to where AVs will be most adopted, and their costs, states are currently making decisions about how to regulate AVs (citation XYZ); this exercise will be useful to those deciding how to form regulations.
-
+While AVs have not been widely adopted yet, they are no longer a speculative technology. Several cities currently permit their use via rideshare. 
+Several states are currently making decisions about how to regulate AVs (citation XYZ).
+We are specifically interested in how AVs will differentially affect places with large amounts of high-skill vs. low-skill workers, as AVs will likely be complementary \textcolor{red}{I am not sure complement is exactly the right word} to the labor of high-skill people,
+but more likely ot be a substitute for low-skill labor. 
 
 
 
 \section{Background and Diagnostic}
-\textit{Prompt:Why is the question or policy you want to examine
-important? Why is a quantitative spatial model the right tool to answer the question?
-Are there any particular features of the policy/economic environment that are impor-
+\textit{Prompt: (a) Why is the question or policy you want to examine
+important? (b) Why is a quantitative spatial model the right tool to answer the question? (c) Are there any particular features of the policy/economic environment that are impor-
 tant for the analysis? Feel free to focus on one or a few aspects that you want to study
 in depth and identify the underlying mechanisms, which will inform you about the key
 elements to be included in your model.}
 
+The key question we have is: how the reduction in commute costs will differentially affect employment, economic activity and rents, across the country, based on their skill levels. \textcolor{red}{need to sharpen this up a little bit. what's the exact outcome we're interested in? }
+
+The widespread adoption of AVs will likely have large effects on the spatial distribution of economic activity. People will be able to work while they commute, and engage in types of leisure that are currently difficult to do while (e.g. watching television). This will permit people to live further from work.
+Furthermore, there is substantive uncertainty as to how states will regulate AVs. We hope our exercise will inform these regulations.
+
+Our setting lends itself well to quantitative spatial models in the style of \citep{redding_quantitative_2017}. The key economic change in our model is a change in the cost of commuting. 
+A lack of detailed data on AVs precludes a reduced-form analysis. And even with such data, without explicitly modeling the movement of goods and people, we risk being subject to the Lucas Critique by not factoring in certain margins of adjustment. 
+Our focus on commuting means we will not richly model the choices of, e.g., the housing sector or goods firms This motivates us to begin with the model of \citep{monte_commuting_2018}.
+
+The key novel feature of the economic environment we hope to study and shed light on is that AVs will serve as a complement\textcolor{red}{I am not sure complement is exactly the right word} for high-skill labor, but as a substitute for low-skill labor. 
+A full treatment of this question will require a model with at least two types of agents, and endogenous wages. In this draft, for tractability, we capture the AVs-as-substitute intuition in a reduced-form way, by modeling the introduction of AVs as reducing bilateral commute costs more for county-pairs with higher skill levels. 
 
 
-Once widely adopted, the first-order effect of AVs is a decline in commute costs. However, when we view AVs as not only a change in commute costs, but as a substitute for certain types of labor (e.g. taxi drivers, truck drivers),
+
+%Our key mechanism of interest is how variation in skill levels will interact with this technology. 
+%Once widely adopted, the first-order effect of AVs is a decline in commute costs. 
+%However, when we view AVs as not only a change in commute costs, but as a substitute for certain types of labor (e.g. taxi drivers, truck drivers),
  
-\textcolor{red}{not sure about this 2x2 cost of housing near work or near home?}
-
-The gain from substituting to AVs should be especially large where rents are high, since there are places where (i) wages must be high for low-skill workers, (ii) commuting  is relatively more attractive. 
 
 
-We thus note this technology will have varied impacts (i) on low-skill and high-skill agents, and in (ii) areas where the cost of housing is relatively high vs. low.
-This intuition is well-illustrated by the following 2x2 table: \textcolor{red}{does it need to be 2x2 or would 1x2 be enough}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
- & High Skill & Low Skill \\ \hline
-High Rent & Unambig. Benefit, Declining Commute Costs & Ambig.:  Wage decline (-), but declining commute costs (+)   \\ \hline
-Low Rent & Unambig. Benefit, Declining Commute Costs (but smaller than for high rent) & Ambig.:  Wage decline (-), but declining commute costs (+)   \\ \hline
-\end{tabular}
-\caption{Impact of AVs on different skill levels and places}
-\label{tab:impact_avs}
-\end{table}
+%The key question we hope to begin answering is \textbf{how varied benefits, across skill-levels and space, will determine the reallocation of economic activity}.
+
+%For tractability, we will start by capturing this intuition of the 2x2 table in a reduced-form way,  \textbf{by reducing bilateral commute costs proportionally to the population-weighted mean college-educated share of the pair. }
+
+%\textcolor{red}{not sure about this 2x2 cost of housing near work or near home?}
+
+%The gain from substituting to AVs should be especially large where rents are high, since there are places where (i) wages must be high for low-skill workers, (ii) commuting  is relatively more attractive. 
 
 
-The key question we hope to begin answering is \textbf{how varied benefits, across skill-levels and space, will determine the winners and losers of this technology, and the spatial distribution of economic activity}.
-
-For tractability, we will start by capturing this intuition of the 2x2 table in a reduced-form way,  \textbf{by reducing bilateral commute costs proportionally to the population-weighted mean college-educated share of the pair. }
-
+%We thus note this technology will have varied impacts (i) on low-skill and high-skill agents, and in (ii) areas where the cost of housing is relatively high vs. low.
+%This intuition is well-illustrated by the following 2x2 table: \textcolor{red}{does it need to be 2x2 or would 1x2 be enough}
+%\begin{table}[h!]
+%\centering
+%\begin{tabular}{|c|c|c|}
+%\hline
+% & High Skill & Low Skill \\ \hline
+%High Rent & Unambig. Benefit, Declining Commute Costs & Ambig.:  Wage decline (-), but declining commute costs (+)   \\ \hline
+%Low Rent & Unambig. Benefit, Declining Commute Costs (but smaller than for high rent) & Ambig.:  Wage decline (-), but declining commute costs (+)   \\ \hline
+%\end{tabular}
+%\caption{Impact of AVs on different skill levels and places}
+%\label{tab:impact_avs}
+%\end{table}
 
 \section{Model}
 
@@ -94,6 +109,9 @@ In a future draft, we may consider the following extensions:
 \item  (i) heterogeneity: explicitly model high and low skill types
  \item (ii) endogenize low-types' wages.
 \item (iii) consider the forward-looking decision of a household to purchase an A.V.
+\item (iv) an optimal tax on AVs to incorporate its labor-replacing externality (?)
+\item (v) incorporate AVs for \textit{goods} transport!
+\item (vi) choices by firms?..
 \end{enumerate}
 
 
@@ -120,7 +138,25 @@ We take as our base economy the one with no AV adoption, and commuting costs are
 
 We then shock the economy by introducing varied adoption, based on the aggregate skill-level of the county pair.
 
+
+
+We model the percent change in bilateral commute costs, $\hat B_{ni}$ as follows:
+We define the skill level of county $i$, $s_i$ as the share of the population above 25, who are college-educated.
+Define the population-weighted college share of county pair $ni$ as 
+
+\textcolor{red}{Probably want to use residents then. We don't have data on education level based on place of work.}
+
+$s_{ni} = \frac{R_i s_n + R_i s_i}{R_i + R_n} $
+
+Where we use the ACS 2006-2010  
+$\hat B_{ni} =  $
+
+
 \textcolor{red}{Justify what we do a little better here and connect it to the distributional effects ``story'' earlier in the paper}
+
+Under what assumptions does this simple exercise capture the intuition above? 
+
+Note, we are shocking transit costs, so immobile features of the location pair, not wages themselves. 
 
 
 

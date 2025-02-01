@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{2}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -10,5 +10,12 @@ Ferdinando Monte, Stephen~J Redding, and Esteban Rossi-Hansberg.
 \newblock Commuting, migration, and local employment elasticities.
 \newblock \emph{American Economic Review}, 108\penalty0 (12):\penalty0 3855--3890, 2018.
 \newblock \doi{10.1257/aer.20151507}.
+
+\bibitem[Redding and Rossi-Hansberg(2017)]{redding_quantitative_2017}
+Stephen~J Redding and Esteban Rossi-Hansberg.
+\newblock Quantitative spatial economics.
+\newblock \emph{Annual Review of Economics}, 9:\penalty0 21--58, 2017.
+\newblock \doi{10.1146/annurev-economics-063016-103713}.
+\newblock URL \url{https://doi.org/10.1146/annurev-economics-063016-103713}.
 
 \end{thebibliography}
