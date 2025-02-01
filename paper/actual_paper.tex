@@ -1,11 +1,20 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=blue,
+}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{natbib}
-\bibliographystyle{plainnat}
+\bibliographystyle{apalike}
+
+
 \title{Our Spatial Paper}
 \author{Your Name}
 \date{\today}
@@ -112,6 +121,7 @@ In a future draft, we may consider the following extensions:
 \item (iv) an optimal tax on AVs to incorporate its labor-replacing externality (?)
 \item (v) incorporate AVs for \textit{goods} transport!
 \item (vi) choices by firms?..
+\item (vii) non-constant effects, some surveys on the topic suggest a higher percent gain in utility from longer commutes in AVs (would require solving for $\mathcal{B}_{ni}$)
 \end{enumerate}
 
 
@@ -136,27 +146,79 @@ We do not need to invert the bilateral amenities matrix $\mathcal{B}_{in}$. Inst
 
 We take as our base economy the one with no AV adoption, and commuting costs are calibrated using existing flows.
 
-We then shock the economy by introducing varied adoption, based on the aggregate skill-level of the county pair.
+We then shock the economy by introducing varied adoption, based on the aggregate skill-level of the county pair.\footnote{Computationally, we implement this as a change in  $B_{ni}$, since a given change $\hat \kappa_{ni}$ is isomorphic to changing in $B_{ni}$ by $\hat \kappa_{ni}^{-\epsilon}$}
+
 
 
 
 We model the percent change in bilateral commute costs, $\hat B_{ni}$ as follows:
-We define the skill level of county $i$, $s_i$ as the share of the population above 25, who are college-educated.
+We define the skill level of county $i$, $s_i$ as the share of the population above 25, who have at least a Bachelor's Degree, which we pull from the ACS 2006-2010 5-year estimates.
 Define the population-weighted college share of county pair $ni$ as 
 
-\textcolor{red}{Probably want to use residents then. We don't have data on education level based on place of work.}
-
-$s_{ni} = \frac{R_i s_n + R_i s_i}{R_i + R_n} $
-
-Where we use the ACS 2006-2010  
-$\hat B_{ni} =  $
+$$s_{ni} = \frac{R_n s_n + R_i s_i}{R_i + R_n} $$
 
 
-\textcolor{red}{Justify what we do a little better here and connect it to the distributional effects ``story'' earlier in the paper}
 
-Under what assumptions does this simple exercise capture the intuition above? 
+To incorporate time data into the model, we use the alternate interpretation of \citep{monte_commuting_2018}, of commuting costs as a loss of work time.
 
-Note, we are shocking transit costs, so immobile features of the location pair, not wages themselves. 
+%The interpretation of $\kappa_{ni}$ there is, ( time spent working + time spent commuting)  / (time spent working)
+
+
+$$\hat \kappa_{ni} =  s_{ni} \hat{\kappa}^{AV} + (1-s_{ni})$$
+
+Where $ \hat{\kappa}^{AV}$ is the relative reduction in commute time costs relative to human-driven vehicles (HVs), (assumed to be homogeneous across county-pairs).
+
+
+
+
+We calibrate $\hat {\kappa^{AV}}$ as follows.
+Wwe want total effective labor to be 8 hours, before AVs. And the mean US commute time is 26.7 minutes (ACS), or 0.89 hours. 
+Then assume that, conditional on commuting by AV, an agent is able to work the entire time  \textcolor{red}{big assumption }, at twice the productivity discount from WFH (to capture e.g. spotty Wifi, motion, etc.). \textcolor{red}{big assumption}
+We get the WFH productivity discount using the midpoint of 13.5\% from \cite{gibbs_et_al_2023}.
+Hence we assume workers are able to work at $(1-13.5\% \times 2)$ = 73\% productivity while commuting. 
+Then we have, for a county-pair, $\kappa_{ni} = 8.89/(8.89-0.89) = 1.11125$, and $\hat \kappa^{AV} = 8.89 / (8.89 - 0.27 \times 0.89 ) = 1.0277$
+Taking the ratio gives us our calibrated parameter, $\hat \kappa^{AV}$ of 0.9248.%
+
+%stated preference data on willingness to accept a longer commute in an AV vs. an HV \citep{zhang_understanding_2021}.
+% Survey respondents in \citep{zhang_understanding_2021} state they are roughly indifferent between a 23.5 minute commute time in an AV vs. a 20 minute commute time by HV.
+%\textcolor{red}{still not so sure this is theoretically consistent with monte et al. This seems like it's overstating things. I think I should be, like subtracting from 8 hours or something. a 4 minute change probably shouldn't be thought of as a 15\% declining in commute costs right}
+ 
+%\subsection{Aside to be deleted later}
+
+%so the most we could is just zero out that 0.5 and assume people are working their entire commute (or working at the productivity of someone doing WFH, a la \citep{gibbs_et_al_2023} )   So we would be comparing 1.125 with 1. 
+
+%Further details on this calibration are in Appendix \textcolor{red}{XX}.
+
+\subsection{Intuition and Embedded Assumptions}
+\textcolor{red}{connect it to the distributional effects ``story'' earlier in the paper}
+
+
+To be transparent: we are shocking commute costs (immobile features of the location pair), rather than wages themselves. 
+So, under what assumptions does this simple exercise capture the intuition of ``AVs-as-substitute-for-low-skill labor''?
+Since we still permit movement in response to the shock (spatial equilibrium), the thought experiment to have in mind is: county-pairs with low-skill residents \textit{prior} to the adoption of AVs will benefit less (from linkage to other places) from adoption.
+This could be considered capturing fixed features of the industries in the place, rather than actual people.
+
+Thus, this exercise will be more informative about what happens to \textit{places}, rather than \textit{agents}.
+
+%Our exercise is akin to assuming only the skilled share benefits from AVs, but not modelling an actual loss for the the non skilled share. 
+
+
+
+
+
+
+
+Because we impose spatial equilibirum, the exercise will not examine welfare effects by place, as expected utility is equalized across space.
+We will still be able to study changes in prices (rent, $P_n$) and quantities ($L_i$, $R_i$), however. \textcolor{red}{XX tie this discussion to what we.. actually do in figures etc below}
+
+One more potential question is why we modify $\kappa$ based on features of the pair, rather than of either only the origin or destination.
+
+\textcolor{red}{XX honestly don't have a compelling answer to this, yet}
+
+
+\textcolor{red}{XX to get at this idea/inequality, consider a partial equilibrium, transitional, analysis where we freeze people in place, can just read off from the $\hat B$ matrix }
+
+\textcolor{red}{XX well. should we shock wages too? }
 
 
 

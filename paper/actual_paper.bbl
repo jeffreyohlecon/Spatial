@@ -1,21 +1,18 @@
-\begin{thebibliography}{2}
-\providecommand{\natexlab}[1]{#1}
-\providecommand{\url}[1]{\texttt{#1}}
-\expandafter\ifx\csname urlstyle\endcsname\relax
-  \providecommand{\doi}[1]{doi: #1}\else
-  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+\begin{thebibliography}{}
 
-\bibitem[Monte et~al.(2018)Monte, Redding, and Rossi-Hansberg]{monte_commuting_2018}
-Ferdinando Monte, Stephen~J Redding, and Esteban Rossi-Hansberg.
+\bibitem[Gibbs et~al., 2023]{gibbs_et_al_2023}
+Gibbs, M., Mengel, F., and Siemroth, C. (2023).
+\newblock Work from home and productivity: Evidence from personnel and analytics data on information technology professionals.
+\newblock {\em Journal of Political Economy Microeconomics}, 1(1):7--41.
+
+\bibitem[Monte et~al., 2018]{monte_commuting_2018}
+Monte, F., Redding, S.~J., and Rossi-Hansberg, E. (2018).
 \newblock Commuting, migration, and local employment elasticities.
-\newblock \emph{American Economic Review}, 108\penalty0 (12):\penalty0 3855--3890, 2018.
-\newblock \doi{10.1257/aer.20151507}.
+\newblock {\em American Economic Review}, 108(12):3855--3890.
 
-\bibitem[Redding and Rossi-Hansberg(2017)]{redding_quantitative_2017}
-Stephen~J Redding and Esteban Rossi-Hansberg.
+\bibitem[Redding and Rossi-Hansberg, 2017]{redding_quantitative_2017}
+Redding, S.~J. and Rossi-Hansberg, E. (2017).
 \newblock Quantitative spatial economics.
-\newblock \emph{Annual Review of Economics}, 9:\penalty0 21--58, 2017.
-\newblock \doi{10.1146/annurev-economics-063016-103713}.
-\newblock URL \url{https://doi.org/10.1146/annurev-economics-063016-103713}.
+\newblock {\em Annual Review of Economics}, 9:21--58.
 
 \end{thebibliography}
