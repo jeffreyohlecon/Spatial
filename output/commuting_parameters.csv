@@ -1,3 +1,6 @@
 Parameter,Value
 epsilon,3.135795041441956
 phi,3.9797599518994926
+alpha,0.6
+sigma,4.0
+psi,0.43
