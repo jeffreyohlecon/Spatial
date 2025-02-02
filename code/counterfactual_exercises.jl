@@ -6,6 +6,7 @@ using CSV, DataFrames, LinearAlgebra, Statistics
 
 d =  Matrix( select( CSV.read("/Users/henriquemota/Dropbox/BigDataFiles/d_ni.csv", DataFrame), Not(:state_county_res) ) )
 hatB  =   Matrix( select( CSV.read("/Users/henriquemota/Dropbox/BigDataFiles/B_ni_hat.csv", DataFrame), Not(:FIPS) ) )
+π = Matrix(  select( CSV.read("/Users/henriquemota/Dropbox/BigDataFiles/B_ni_hat.csv", DataFrame), Not(:FIPS) ) )
 
 cd("/Users/henriquemota/Library/CloudStorage/OneDrive-Personal/Documentos/_PhD_Classes/Trade Track/Spatial/Programming/")
 
@@ -25,6 +26,8 @@ param = CSV.read("output/commuting_parameters.csv", DataFrame)
 #D = CSV.read("output/D_n.csv", DataFrame)[!, :D_n]
 D = CSV.read("output/data_esteban_rf.csv", DataFrame)[!, :deficit]
 
+
+esteban = CSV.read("output/data_esteban_rf.csv", DataFrame)
 
 
 R = CSV.read("output/R_n.csv", DataFrame)[!,  :residence_emp]
@@ -46,30 +49,17 @@ A = CSV.read("output/productivities.csv", DataFrame)[!,:A_i]
 
 
 #Calculating the Pi 
-
-
-ek_term = reshape(L, (1, n_counties)) .* 
-
-(d .* reshape(w./A, (1, n_counties)) ) .^ (1.0 -σ)
-
-
-function calc_pi(l::Vector{Int64}, d_ni::Matrix{Float64}, wage::Vector{Float64}, Ai::Vector{Float64})
-
-ek_term = reshape(l, (1, n_counties)) .* (d_ni .* reshape(wage./Ai, (1, n_counties)) ) .^ (1-σ)
-denom = sum(ek_term, dims = 2)
-
-pi = ek_term ./ denom 
-
-return pi
-end 
-
-π = calc_pi(L, d, w, A)
-
-sum(π, dims = 2)
+#function calc_pi(l::Vector{Int64}, d_ni::Matrix{Float64}, wage::Vector{Float64}, Ai::Vector{Float64})
+#ek_term = reshape(l, (1, n_counties)) .* (d_ni .* reshape(wage./Ai, (1, n_counties)) ) .^ (1-σ)
+#denom = sum(ek_term, dims = 2)
+#pi = ek_term ./ denom 
+#return pi
+#end 
+#π = calc_pi(L, d, w, A)
+#sum(π, dims = 2)
 
 
 # Shocks 
-
 hat_κ =  ones(n_counties, n_counties)
 hat_A =  ones(n_counties)
 hat_d =  ones(n_counties, n_counties)
@@ -213,7 +203,6 @@ sum(D)
 sum( transpose(π), dims = 1) 
 
 
-reshape(w.*L ./ 10^6, (1,n_counties) )  
+h = ( reshape(w.*L , (1,n_counties) )   - sum( π .* (v.*R .+ ( D .* 1000000)  ) , dims =1 )  )
 
-sum( π .*( (v.*R./10^6) .+ D  ) , dims =1 )
 
