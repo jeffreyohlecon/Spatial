@@ -1,0 +1,16 @@
+#### Sanity Check: USE A SHOCK WITH ONES ONLY 
+hat_B2 = ones(n_counties, n_counties)
+
+hat_v = calc_hatv(v, w, λ, hat_B2, hat_κ, guess_hat_wage, guess_hat_lambda)
+
+hatL, hatR = calc_LR(L, R, λ, guess_hat_lambda)
+
+hatQ = hat_v .* hatR 
+
+hat_pi = calc_hat_pi(π, hat_d, hat_A, guess_hat_wage, hatL)
+
+hatP = ( reshape(hatL, (n_counties, 1)) ./ diag(hat_pi) ).^(1/(1-σ))   .* (guess_hat_wage ./ hat_A)
+hatP = hatP[:,1]
+
+new_wage =  calc_new_w(Y, π, v, R, D, hat_pi, hatL, hatR, hat_v) 
+new_lambda = calc_new_lambda(Y, λ, hat_B2, hat_κ, hatP, hatQ, guess_hat_wage)

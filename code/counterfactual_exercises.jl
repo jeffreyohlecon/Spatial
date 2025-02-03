@@ -1,6 +1,5 @@
 using Pkg
-Pkg.add(["CSV", "DataFrames"])
-using CSV, DataFrames, LinearAlgebra, Statistics, SparseArrays
+using CSV, DataFrames, LinearAlgebra, Statistics, SparseArrays, Plots, StatsPlots, ColorSchemes, StatsBase
 
 #Extracting some stuff from Dropbox before setting up the CD
 
@@ -24,18 +23,13 @@ param = CSV.read("output/commuting_parameters.csv", DataFrame)
 #All these vectors are column vectors 
 # Subscript n shall be row , Subscript i shall be second dim, col. 
 
-D = CSV.read("output/D_n.csv", DataFrame)[!, :D_n].* 10^6
-# D = CSV.read("output/data_esteban_rf.csv", DataFrame)[!, :deficit]
+D =  Vector(CSV.read("output/D_n.csv", DataFrame, header = false)[:, 1])
 
-
-esteban = CSV.read("output/data_esteban_rf.csv", DataFrame)
-
-
+L = Vector(CSV.read("output/L_i.csv", DataFrame, header = false)[:, 1])
 R = Vector(CSV.read("output/R_n.csv", DataFrame, header = false)[:, 1])
-v = Vector(CSV.read("output/Vbar_n.csv", DataFrame, header = false)[:, 1])
 
 w = Vector(CSV.read("output/w_i.csv", DataFrame, header = false)[:, 1])
-L = Vector(CSV.read("output/L_i.csv", DataFrame, header = false)[:, 1])
+v = Vector(CSV.read("output/Vbar_n.csv", DataFrame, header = false)[:, 1])
 
 n_counties = size(L, 1)
 
@@ -48,7 +42,6 @@ A = Vector(CSV.read("output/productivities.csv", DataFrame, header = false)[:, 1
 λ = Matrix( select( CSV.read("output/lambda_ni.csv", DataFrame), Not(:state_county_res) ) )
 
 Y = w .* L 
-
 
 # Shocks 
 hat_κ =  ones(n_counties, n_counties)
@@ -96,10 +89,7 @@ function calc_hat_pi(p::SparseMatrixCSC{Float64},  #Observable
 return final
 end
 
-
-
-
-function calc_new_w(y::Vector{Float64}, p::SparseMatrixCSC{Float64}, v::Vector{Float64}, R::Vector{Float64}, #Obsservable variables
+function calc_new_w(y::Vector{Float64}, p::SparseMatrixCSC{Float64}, v::Vector{Float64}, R::Vector{Float64},  D::Vector{Float64}, #Obsservable variables
    hat_pi::Matrix{Float64}, hat_L::Vector{Float64}, hat_R::Vector{Float64}, hat_v::Vector{Float64} ) #Iterative Shocks 
 
 #This is how it looks in the files
@@ -127,12 +117,32 @@ function calc_new_lambda(Y::Vector{Float64}, lambda::Matrix{Float64}, #Obsservab
     return new_lambda 
  end 
 
+ ### NEW COUNTER-FACTUAL 
 
+function loop_fun(old_wage::Vector{Float64}, old_lambda::Matrix{Float64}, #Past Wage, Lambda Guess (t+1) 
+    hat_Bni::Matrix{Float64}, hat_kappa::Matrix{Float64}, hat_prod::Vector{Float64}, hat_dni::Matrix{Float64}, #Shocks
+    bar_v::Vector{Float64},wage::Vector{Float64}, #Observable - Prices
+    l::Vector{Int64}, r::Vector{Float64}, y::Vector{Float64}, deficit::Vector{Float64}, # Observables - Allocations
+    lambda::Matrix{Float64}, p::SparseMatrixCSC{Float64, Int64} # Flow Data - Commuting and Trade 
+)
 
+hat_v = calc_hatv(bar_v, wage, lambda, hat_Bni, hat_kappa, old_wage, old_lambda)
 
+hatL, hatR = calc_LR(l, r, lambda, old_lambda)
+
+hatQ = hat_v .* hatR 
+hat_pi = calc_hat_pi(p, hat_dni, hat_prod, old_wage, hatL)
+
+hatP = ( reshape(hatL, (n_counties, 1)) ./ diag(hat_pi) ).^(1/(1-σ))   .* (old_wage ./ hat_prod)
+hatP = hatP[:,1]
+
+new_wage =  calc_new_w(y, p, v, r, deficit, hat_pi, hatL, hatR, hat_v) 
+new_lambda = calc_new_lambda(y, lambda, hat_Bni, hat_kappa, hatP, hatQ, old_wage)
+
+return reshape(new_wage, (n_counties, 1) ), new_lambda 
+end 
 
 # Shocks 
-
 hat_κ =  ones(n_counties, n_counties)
 hat_A =  ones(n_counties)
 hat_d =  ones(n_counties, n_counties)
@@ -142,21 +152,129 @@ guess_hat_wage = ones(n_counties)
 guess_hat_lambda = ones(n_counties,n_counties)
 
 #### Sanity Check: USE A SHOCK WITH ONES ONLY 
-hat_B2 = ones(n_counties, n_counties)
+hat_B2 = ones(n_counties, n_counties) 
 
-hat_v = calc_hatv(v, w, λ, hat_B2, hat_κ, guess_hat_wage, guess_hat_lambda)
+new_w, new_λ = loop_fun(guess_hat_wage, guess_hat_lambda, 
+        hat_B2,  hat_κ, hat_A, hat_d, 
+        v, w,
+        L, R, Y, D, 
+        λ, π)
 
-hatL, hatR = calc_LR(L, R, λ, guess_hat_lambda)
+new_w
+new_λ
 
-hatQ = hat_v .* hatR 
+### START LOOP FOR COUNTERFACTUAL ANALYSIS 
 
-hat_pi = calc_hat_pi(π, hat_d, hat_A, guess_hat_wage, hatL)
+tol = 1e-6
+max_iter = 1000
+iter = 0
+ζ = 0.7
 
-hatP = ( reshape(hatL, (n_counties, 1)) ./ diag(hat_pi) ).^(1/(1-σ))   .* (guess_hat_wage ./ hat_A)
-hatP = hatP[:,1]
+old_w = guess_hat_wage
+old_λ = guess_hat_lambda
 
-new_wage =  calc_new_w(Y, π, v, R, hat_pi, hatL, hatR, hat_v) 
-new_lambda = calc_new_lambda(Y, λ, hat_B2, hat_κ, hatP, hatQ, guess_hat_wage)
+using Dates
+
+start_time = now()
+
+final_dist_w = 0.0
+final_dist_λ = 0.0
+
+while iter < max_iter
+
+    tilde_w, tilde_λ = loop_fun(old_w, old_λ, 
+        hatB, hat_κ, hat_A, hat_d, 
+        v, w, L, R, Y, D, λ, π)
+    
+    dist_w = maximum( abs.(tilde_w ./ old_w .- 1 ) )
+    dist_λ = maximum( abs.(tilde_λ ./ old_λ .- 1 ) )
+    
+    if dist_λ < tol && dist_w < tol
+        final_dist_w = dist_w
+        final_dist_λ = dist_λ
+        break
+    end
+    
+    old_w = tilde_w .* (1-ζ) + old_w .* ζ
+    old_w = old_w[:,1]
+    old_λ = tilde_λ .* (1-ζ) + old_λ .* ζ
+    iter += 1
+    if iter % 10 == 0
+        println("Iteration $iter: max distance_w = $(maximum(abs.(dist_w))), max distance_λ = $(maximum(abs.(dist_λ)))")
+    end
+end
+
+end_time = now()
+elapsed_time = end_time - start_time
+
+println("Converged after $iter iterations")
+println("Final max distance_w = $final_dist_w, Final max distance_λ = $final_dist_λ")
+println("Elapsed time: $elapsed_time")
+
+old_w # I no these names don't make much sense
+old_λ # I no these names don't make much sense
+
+# Plot histogram and density for old_w
+histogram(old_w, bins=100, normalize=true, alpha=0.5, label="Histogram of change in wages")
+density!(old_w, label="Density of change in w")
+
+# Plot histogram and density for old_λ
+histogram(diag(old_λ), bins=100, normalize=true, alpha=0.5, label="Histogram of change in λ")
+density!(old_λ[:], label="Density of λ")
+
+
+cf_hatL, cf_hatR = calc_LR(L, R, λ, old_λ)
+
+cf_hat_v = calc_hatv(v, w, λ, hatB, hat_κ, old_w, old_λ)
+
+vector_number = select( CSV.read("output/lambda_ni.csv", DataFrame), :state_county_res)[:,1]
+
+cf_hat_π = calc_hat_pi(π, hat_d, hat_A, old_w, cf_hatL)
+
+cf_hatP = ( reshape(cf_hatL, (n_counties, 1)) ./ diag(cf_hat_π) ).^(1/(1-σ))   .* (old_w ./ hat_A)
+cf_hatP = cf_hatP[:,1]
+
+cf_hatQ = cf_hat_v .* cf_hatR 
+
+real_v = cf_hat_v ./ cf_hatP
+
+
+
+# Plot histogram and density for real_v
+histogram(real_v, bins=100, normalize=true, alpha=0.5, label="Histogram of real wages")
+density!(real_v, label="Density of real wages")
+
+# Save the plot
+savefig("output/figures/real_wages_histogram_density.png")
+
+
+mean((old_w .* cf_hatL) ./ cf_hatP )
+mean(old_w ./ cf_hatP)
+mean(cf_hat_v ./ cf_hatP)
+mean(cf_hatQ ./ cf_hatP)
+mean(cf_hat_v ./ cf_hatP)
+
+sum((cf_hatQ ./ cf_hatP .<1) ) # Half of counties worse off
+# Calculate the weighted sum of real wages
+sum((cf_hatQ ./ cf_hatP  .>1) .*  R ) ./sum(R) 
+#Apparently very unequal, only 36% of original individuals are in counties that are better off
+
+
+# Create a DataFrame with the required columns
+
+result_df_main = DataFrame(
+    vector_number = vector_number,
+    hat_w = old_w,
+    hatL = cf_hatL,
+    hatR = cf_hatR,
+    hatv = cf_hat_v, 
+    diag_hat_λ = diag(old_λ), 
+    hatP = cf_hatP,
+    hatQ = cf_hatQ,
+    real_v = real_v)
+
+# Save the result_df as a .csv file in output as result_first_cf
+CSV.write("output/result_first_cf.csv", result_df_main)
 
 
 
