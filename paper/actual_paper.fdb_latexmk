@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex actual_paper"] 1738428323.98245 "actual_paper.aux" "actual_paper.bbl" "actual_paper" 1738429296.25144 0
+["bibtex actual_paper"] 1738528494.91715 "actual_paper.aux" "actual_paper.bbl" "actual_paper" 1738528679.86365 0
   "./references.bib" 1738426724.53351 2366 5d4f9c50bc7c82b5e0f8cb354362265c ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "actual_paper.aux" 1738429295.92758 1513 51d84491a5ce5e7ec0e8762e7f3f6058 "pdflatex"
+  "actual_paper.aux" 1738528679.65403 1775 791224e8cb3842f82f99804dbcedc66f "pdflatex"
   (generated)
   "actual_paper.bbl"
   "actual_paper.blg"
   (rewritten before read)
-["pdflatex"] 1738429295.08557 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/actual_paper.tex" "actual_paper.pdf" "actual_paper" 1738429296.25161 0
-  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/actual_paper.tex" 1738429294.89177 12273 9085c2331ad712614513975a1bb22c38 ""
+["pdflatex"] 1738528679.21336 "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/actual_paper.tex" "actual_paper.pdf" "actual_paper" 1738528679.8638 0
+  "/Users/jeffreyohl/Documents/GitHub/Spatial/paper/actual_paper.tex" 1738528679.56914 12449 4647b793f94131617c7ec391947b1e5a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -92,10 +92,10 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1732026843.74287 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1732026737 8221435 f74261876c5513771505f21185b529a0 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "actual_paper.aux" 1738429295.92758 1513 51d84491a5ce5e7ec0e8762e7f3f6058 "pdflatex"
-  "actual_paper.bbl" 1738428324.0665 797 379d85ebc1211a9c44168eed03c7216b "bibtex actual_paper"
-  "actual_paper.out" 1738429295.93106 1119 158292a5fcdd90209e6539317fbbcd2b "pdflatex"
-  "actual_paper.tex" 1738429294.89177 12273 9085c2331ad712614513975a1bb22c38 ""
+  "actual_paper.aux" 1738528679.65403 1775 791224e8cb3842f82f99804dbcedc66f "pdflatex"
+  "actual_paper.bbl" 1738528495.00952 797 379d85ebc1211a9c44168eed03c7216b "bibtex actual_paper"
+  "actual_paper.out" 1738528679.65441 1489 0a836989b24b356f980db564e94eddd9 "pdflatex"
+  "actual_paper.tex" 1738528679.56914 12449 4647b793f94131617c7ec391947b1e5a ""
   (generated)
   "actual_paper.aux"
   "actual_paper.log"
