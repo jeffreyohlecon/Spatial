@@ -35,8 +35,8 @@ ymin, ymax = 24, 50
 # Function to generate each map (returns a plot object)
 function plot_variable(data, variable_name, title_name)
 
-    p = plot(color=:blues, grid=false, framestyle=:none, axis=nothing, ratio=1, 
-             xlims=(xmin, xmax), ylims=(ymin, ymax), title=title_name, size = (900,675))
+    p = plot(color=:blues, grid=false, framestyle=:box, axis=nothing, ratio=1, 
+             xlims=(xmin, xmax), ylims=(ymin, ymax), title=title_name)
 
             
 min_val = minimum(skipmissing(data[!,variable_name]))
@@ -61,16 +61,114 @@ end
 
 # Generate maps for the four variables
 # Use the PlotlyJS backend for interactive plots
-p1 = plot_variable(merged_df, :old_w, "Old Wages by County")
-p2 = plot_variable(merged_df, :cf_hatL, "Change in Workers by County")
-p3 = plot_variable(merged_df, :cf_hatR, "Change in Residents by County")
-p4 = plot_variable(merged_df, :diag_old_λ, "Change in Living Where You Work by County")
-p5 = plot_variable(merged_df, :real_v, "Change in Real Average Income by County")
+p1 = plot_variable(merged_df, :cf_w, "Change in Wages (%) by County")
+p2 = plot_variable(merged_df, :cf_hatL, "Change in Workers (%) by County")
+p3 = plot_variable(merged_df, :cf_hatR, "Change in Residents (%) by County")
+p4 = plot_variable(merged_df, :diag_cf_λ, "Change in Living Where You Work (%) by County")
+p5 = plot_variable(merged_df, :real_v, "Change in Real Average Income (%) by County")
+p6 = plot_variable(merged_df, :shock, "Deviation from Mean Growth (p.p.) - Shock in B")
 
 # Save the plots to the output/figures folder with higher resolution
-savefig(p1, "output/figures/old_wages_by_county.png")
+savefig(p1, "output/figures/cf_wages_by_county.png")
 savefig(p2, "output/figures/change_in_workers_by_county.png")
 savefig(p3, "output/figures/change_in_residents_by_county.png")
 savefig(p4, "output/figures/change_in_living_where_you_work_by_county.png")
 savefig(p5, "output/figures/change_in_real_income.png")
+savefig(p6, "output/figures/change_in_B.png")
 
+
+# Filter the DataFrame for New York state (FIPS code for New York is '36')
+ny_df = filter(row -> startswith(row.GEOID10, "36"), merged_df)
+
+# Define geographic bounds for New York
+xmin_ny, xmax_ny = -80, -70  
+ymin_ny, ymax_ny = 40, 45      
+
+# Function to generate each map for New York (returns a plot object)
+function plot_variable_ny(data, variable_name, title_name)
+
+    p = plot(color=:blues, grid=false, framestyle=:box, axis=nothing, ratio=1, 
+             xlims=(xmin_ny, xmax_ny), ylims=(ymin_ny, ymax_ny), title=title_name)
+
+    min_val = minimum(skipmissing(data[!,variable_name]))
+    max_val = maximum(skipmissing(data[!,variable_name]))
+
+    val = maximum([abs(min_val), abs(max_val)]) 
+
+    clims=(-1.05, 1.05).*val
+
+    # Define the custom 3-color scale with min_val, 0, and max_val
+    custom_cmap = cgrad([:red, :white, :green], scale=:symlog, rev=false)
+
+    for row in eachrow(data)
+        if !ismissing(row[variable_name])
+            plot!(p, row.geometry, fill_z=row[variable_name], label="", lw=0.5, linecolor=:black, c=custom_cmap, clims = clims, colorbar_size=0.03)
+        end
+    end
+
+    return p  # Ensure function returns a plot object
+end
+
+# Generate maps for the four variables for New York
+p1_ny = plot_variable_ny(ny_df, :cf_w, "Change in Wages (%) by County")
+p2_ny = plot_variable_ny(ny_df, :cf_hatL, "Change in Workers (%) by County")
+p3_ny = plot_variable_ny(ny_df, :cf_hatR, "Change in Residents (%) by County")
+p4_ny = plot_variable_ny(ny_df, :diag_cf_λ, "Change in Living Where You Work (%) by County")
+p5_ny = plot_variable_ny(ny_df, :real_v, "Change in Real Average Income (%) by County")
+p6_ny = plot_variable_ny(ny_df, :shock, "Deviation from Mean Growth (p.p.) - Shock in B")
+
+# Save the plots to the output/figures folder with higher resolution
+savefig(p1_ny, "output/figures/new_york/ny_cf_wages_by_county.png")
+savefig(p2_ny, "output/figures/new_york/ny_change_in_workers_by_county.png")
+savefig(p3_ny, "output/figures/new_york/ny_change_in_residents_by_county.png")
+savefig(p4_ny, "output/figures/new_york/ny_change_in_living_where_you_work_by_county.png")
+savefig(p5_ny, "output/figures/new_york/ny_change_in_real_income.png")
+savefig(p6_ny, "output/figures/new_york/ny_change_in_shock.png")
+
+# Filter the DataFrame for California state (FIPS code for California is '06')
+ca_df = filter(row -> startswith(row.GEOID10, "06"), merged_df)
+
+# Define geographic bounds for California
+xmin_ca, xmax_ca = -125, -114  
+ymin_ca, ymax_ca = 32, 42      
+
+# Function to generate each map for California (returns a plot object)
+function plot_variable_ca(data, variable_name, title_name)
+
+    p = plot(color=:blues, grid=false, framestyle=:box, axis=nothing, ratio=1, 
+             xlims=(xmin_ca, xmax_ca), ylims=(ymin_ca, ymax_ca), title=title_name)
+
+    min_val = minimum(skipmissing(data[!,variable_name]))
+    max_val = maximum(skipmissing(data[!,variable_name]))
+
+    val = maximum([abs(min_val), abs(max_val)]) 
+
+    clims=(-1.05, 1.05).*val
+
+    # Define the custom 3-color scale with min_val, 0, and max_val
+    custom_cmap = cgrad([:red, :white, :green], scale=:symlog, rev=false)
+
+    for row in eachrow(data)
+        if !ismissing(row[variable_name])
+            plot!(p, row.geometry, fill_z=row[variable_name], label="", lw=0.5, linecolor=:black, c=custom_cmap, clims = clims, colorbar_size=0.03)
+        end
+    end
+
+    return p  # Ensure function returns a plot object
+end
+
+# Generate maps for the four variables for California
+p1_ca = plot_variable_ca(ca_df, :cf_w, "Change in Wages (%) by County")
+p2_ca = plot_variable_ca(ca_df, :cf_hatL, "Change in Workers (%) by County")
+p3_ca = plot_variable_ca(ca_df, :cf_hatR, "Change in Residents (%) by County")
+p4_ca = plot_variable_ca(ca_df, :diag_cf_λ, "Change in Living Where You Work (%) by County")
+p5_ca = plot_variable_ca(ca_df, :real_v, "Change in Real Average Income (%) by County")
+p6_ca = plot_variable_ca(ca_df, :shock, "Deviation from Mean Growth (p.p.) - Shock in B")
+
+# Save the plots to the output/figures folder with higher resolution
+savefig(p1_ca, "output/figures/california/ca_cf_wages_by_county.png")
+savefig(p2_ca, "output/figures/california/ca_change_in_workers_by_county.png")
+savefig(p3_ca, "output/figures/california/ca_change_in_residents_by_county.png")
+savefig(p4_ca, "output/figures/california/ca_change_in_living_where_you_work_by_county.png")
+savefig(p5_ca, "output/figures/california/ca_change_in_real_income.png")
+savefig(p6_ca, "output/figures/california/ca_change_in_B.png")
