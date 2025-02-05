@@ -1,17 +1,27 @@
 using Pkg
-using CSV, DataFrames, LinearAlgebra, Statistics, SparseArrays, Plots, StatsPlots, ColorSchemes, StatsBase
+using CSV, DataFrames, LinearAlgebra, Statistics, SparseArrays, Plots, StatsPlots, ColorSchemes, StatsBase, GLM
 using Dates
 using CategoricalArrays
 using Loess 
 using DataFrames, StatsPlots, StatsBase, CategoricalArrays
-
-### Define a File Path: 
+using Shapefile
+using DataFrames
+using Plots
+using CSV 
+import .Missings 
 
 project_path = joinpath(homedir(), "Library", "CloudStorage", "OneDrive-Personal", 
                         "Documentos", "_PhD_Classes", "Trade Track", "Spatial", "Programming")
 
 # Stop execution if the input is empty
 isempty(project_path) && error("You must enter a valid directory path!")
+
+# Define the versions to loop over
+versions = ["uniform", "het"]
+ones_diagonal = "yes" # "yes" or "no"
+
+for version in versions    
+println("Running counterfactual analysis for version: $version")
 
 #Extracting some stuff from Dropbox before setting up the CD
 
@@ -20,8 +30,22 @@ dropbox_path = joinpath(homedir(), "Dropbox", "BigDataFiles")
 
 cd(dropbox_path)
 
-
+if version == "uniform"
+    hatB  =   Matrix( select( CSV.read("B_ni_hat_uniform.csv", DataFrame), Not(:FIPS) ) )
+end
+if version == "het"
 hatB  =   Matrix( select( CSV.read("B_ni_hat_destination_sorted.csv", DataFrame), Not(:FIPS) ) )
+end
+
+if ones_diagonal == "yes"
+println("ONES ARE IN THE DIAGONAL")
+for i in 1:size(hatB, 1)
+    hatB[i, i] = 1
+end
+else 
+println("ONES ARE NOT IN THE DIAGONAL")
+end 
+
 π = Matrix(  select( CSV.read("/Users/henriquemota/Dropbox/BigDataFiles/pi_ni.csv", DataFrame), Not(:state_county_code) ) )
 π = sparse(π)
 
@@ -177,8 +201,11 @@ new_w, new_λ = loop_fun(guess_hat_wage, guess_hat_lambda,
         L, R, Y, D, 
         λ, π)
 
-new_w
-new_λ
+san_check1 = new_w[1:10] 
+san_check2 = new_λ[1:5, 1:5]
+println("Sanity Check - Shock of 1: wage (First 10 entries): $san_check1")
+println("Sanity Check - Shock of 1: lambda (First 5x5 entries): $san_check2")
+
 
 ### START LOOP FOR COUNTERFACTUAL ANALYSIS 
 
@@ -229,19 +256,7 @@ println("Elapsed time: $elapsed_time")
 return old_w, old_λ
 end 
 
-
 cf_w, cf_λ = eq_gen(guess_hat_wage, guess_hat_lambda, tol, max_iter, ζ, hatB, hat_κ, hat_A, hat_d, v, w, L, R, Y, D, λ, π)
-
-
-# Plot histogram and density for cf_w
-histogram(cf_w, bins=100, normalize=true, alpha=0.5, label="Histogram of change in wages")
-density!(cf_w, label="Density of change in w")
-
-# Plot histogram and density for cf_λ
-histogram(diag(cf_λ), bins=100, normalize=true, alpha=0.5, label="Histogram of change in λ")
-density!(cf_λ[:], label="Density of λ")
-
-
 cf_hatL, cf_hatR = calc_LR(L, R, λ, cf_λ)
 
 cf_hat_v = calc_hatv(v, w, λ, hatB, hat_κ, cf_w, cf_λ)
@@ -257,28 +272,14 @@ cf_hatQ = cf_hat_v .* cf_hatR
 
 real_v = cf_hat_v ./ cf_hatP
 
-# Plot histogram and density for real_v
-histogram(real_v, bins=100, normalize=true, alpha=0.5, label="Histogram of real wages")
-density!(real_v, label="Density of real wages")
-
-# Save the plot
-savefig("output/figures/real_wages_histogram_density.png")
-
-
-mean((cf_w .* cf_hatL) ./ cf_hatP )
-mean(cf_w ./ cf_hatP)
-mean(cf_hat_v ./ cf_hatP)
-mean(cf_hatQ ./ cf_hatP)
-mean(cf_hat_v ./ cf_hatP)
-
-sum((cf_hatQ ./ cf_hatP .<1) ) # Half of counties worse off
-# Calculate the weighted sum of real wages
-sum((cf_hatQ ./ cf_hatP  .>1) .*  R ) ./sum(R) 
-#Apparently very unequal, only 36% of original individuals are in counties that are better off
-
-
-var_hatB = (diag(hatB) .-1).*100
-var_hatB = var_hatB .- mean(var_hatB)
+println("Sanity Check Results:")
+println("Sum of cf_λ * λ: ", sum(cf_λ .* λ))
+println("Sum of cf_hat_π * π: ", sum(cf_hat_π .* π))
+println("Sum of cf_hatL * L / sum(L): ", sum(cf_hatL .* L) / sum(L))
+println("Sum of cf_hatR * R / sum(R): ", sum(cf_hatR .* R) / sum(R))
+#
+var_hatB = sum( hatB .* λ, dims =2) ./ sum(λ, dims = 2)
+var_hatB = ( var_hatB .- mean(var_hatB))[:,1]
 
 # Create a DataFrame with the required columns
 
@@ -296,7 +297,7 @@ result_df = DataFrame(
 
 
 # Shocks for the maps 
-CSV.write("output/map_database.csv", result_df)
+CSV.write("output/map_database_$version.csv", result_df)
 
 result_df_main = DataFrame(
     vector_number = vector_number,
@@ -308,85 +309,36 @@ result_df_main = DataFrame(
     hatP = cf_hatP,
     hatQ = cf_hatQ,
     real_v = real_v, 
+    var_hatB = var_hatB ,   
     L = L, 
-    R = R)
+    R = R,
+    A = A, 
+    w = w)
 
 # Save the result_df as a .csv file in output as result_first_cf
-CSV.write("output/result_first_cf.csv", result_df_main)
+CSV.write("output/result_cf_$version.csv", result_df_main)
 
-# Calculate centiles for L and R
-centiles_L = quantile(L, 0:0.01:1)
-centiles_R = quantile(R, 0:0.01:1)
+U = ( (1 ./diag(cf_λ)).^(1/ϵ) ) .* ( (1 ./ diag(cf_hat_π)).^(α/(σ-1)) ).* 
+((cf_w ./ cf_hat_v).^ (1-α)).*((cf_hatL).^(α/(σ-1)) .* (cf_hatR).^(α-1) )
 
-centiles_L[101] = centiles_L[101] + 1e-6
-centiles_R[101] = centiles_R[101] + 1e-6
+welfare_gain  = maximum(U)
+println("Welfare Gain: $welfare_gain")
 
-# Assign centiles to each county
-result_df_main[!, :centile_L] = cut(L, centiles_L, labels=1:100)
-result_df_main[!, :centile_R] = cut(R, centiles_R, labels=1:100)
+# Save the welfare gain to a CSV file
+welfare_gain_df = DataFrame(welfare_gain = welfare_gain)
+CSV.write("output/welfare_gain_$version.csv", welfare_gain_df)
 
-# Calculate means of hat_L and hat_R for each centile
-result_df_main[!, :adj_hatL] = (result_df_main[!, :hatL] .- 1) .* 100
-result_df_main[!, :adj_hatR] = (result_df_main[!, :hatR] .- 1) .* 100
+# Plot histogram and density for U
+histogram(U, bins=100, normalize=true, alpha=0.5, label="Histogram of U")
+density!(U, label="Density of U")
 
-mean_hatL_by_centile_L = combine(groupby(result_df_main, :centile_L)) do df
-    w = Weights(df.L)
-    (; weighted_mean_adj_hatL = mean(df.adj_hatL, w))
+# Save the plot
+savefig("output/figures/histogram_density_U_$version.png") 
+
+println("Counter-factual analysis finished for version: $version")  
 end
 
-mean_hatR_by_centile_R = combine(groupby(result_df_main, :centile_R)) do df
-    w = Weights(df.R)
-    (; weighted_mean_adj_hatR = mean(df.adj_hatR, w))
-    end
 
+# include("plot_maps.jl")
 
-# Ensure centile_L is converted to numeric values
-numeric_centile_L = parse.(Float64, string.(mean_hatL_by_centile_L.centile_L))
-numeric_centile_R = parse.(Float64, string.(mean_hatR_by_centile_R.centile_R))
-
-# Function to apply LOESS smoothing
-function loess_smooth(x, y; span=0.5)
-    model = loess(x, y; span=span)  # Fit LOESS model
-    return predict(model, x)        # Get smoothed values
-end
-
-# Compute LOESS smoothed values
-smooth_L = loess_smooth(numeric_centile_L, mean_hatL_by_centile_L.weighted_mean_adj_hatL)
-smooth_R = loess_smooth(numeric_centile_R, mean_hatR_by_centile_R.weighted_mean_adj_hatR)
-
-# Scatter plot with LOESS smoothing for L
-scatter_plot_weighted_L = scatter(numeric_centile_L, mean_hatL_by_centile_L.weighted_mean_adj_hatL, 
-    legend=false, xlabel="Centiles of L", ylabel="Weighted Mean Growth (%)", 
-    title="Weighted Mean Growth (%) by Centiles of L", 
-    xticks=([0, 10, 25, 50, 75, 90, 100], string.([0, 10, 25, 50, 75, 90,100])))
-
-plot!(numeric_centile_L, smooth_L, label="loess", lw=2, color=:blue)  # Add LOESS line
-
-# Scatter plot with LOESS smoothing for R
-scatter_plot_weighted_R = scatter(numeric_centile_R, mean_hatR_by_centile_R.weighted_mean_adj_hatR, 
-    legend=false, xlabel="Centiles of R", ylabel="Weighted Mean Growth (%)", 
-    title="Weighted Mean Growth (%) by Centiles of R", 
-    xticks=([0, 10, 25, 50, 75, 90, 100], string.([0, 10, 25, 50, 75, 90,100])))
-
-plot!(numeric_centile_R, smooth_R, label="loess", lw=2, color=:blue)
-
-    # Save the plots
-savefig(scatter_plot_weighted_L, "output/figures/scatter_hat_L.png")
-savefig(scatter_plot_weighted_R, "output/figures/scatter_hat_R.png")
-
-
-# Plot both curves in the same plot with different colors and include scatter points
-plot(numeric_centile_L, smooth_L, label="LOESS for L", lw=2, color=:blue, xlabel="Centiles", ylabel="Weighted Mean Growth (%)", title="Weighted Mean Growth (%) by Centiles of L and R")
-scatter!(numeric_centile_L, mean_hatL_by_centile_L.weighted_mean_adj_hatL, label="Data points for L", color=:blue, marker=:circle)
-plot!(numeric_centile_R, smooth_R, label="LOESS for R", lw=2, color=:red)
-scatter!(numeric_centile_R, mean_hatR_by_centile_R.weighted_mean_adj_hatR, label="Data points for R", color=:red, marker=:circle)
-
-# Save the combined plot
-savefig("output/figures/scatter_hat_L_and_R.png")
-
-# Plot both curves in the same plot with different colors
-plot(numeric_centile_L, smooth_L, label="LOESS for L", lw=2, color=:blue, xlabel="Centiles", ylabel="Weighted Mean Growth (%)", title="Weighted Mean Growth (%) by Centiles of L and R")
-plot!(numeric_centile_R, smooth_R, label="LOESS for R", lw=2, color=:red)
-
-# Save the combined plot
-savefig("output/figures/scatter_hat_L_and_R_onlyLOESS.png")
+include("plot_fig.jl")
