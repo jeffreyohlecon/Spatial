@@ -1,5 +1,7 @@
 cd(project_path) 
 
+default(dpi = 900)
+
 versions = ["uniform", "het"]
 
 for version in versions    
@@ -137,14 +139,20 @@ max_R_idx = argmax(result_df_main.R)
 
 result_df_main.vector_number[max_R_idx]
 
-scatter(result_df_main.hatL, result_df_main.hatR, markersize=sqrt.(R)/10^2, alpha=0.5,
-    legend=false, xlabel=" Hat L_i", ylabel="Hat R_i", 
-    title="")
-    # Add 45-degree dashed line
+xlims = (0.96, 1.08)
+ylims = (0.96, 1.08)
 
-    plot!([minimum(result_df_main.hatL), maximum(result_df_main.hatL)], 
-        [minimum(result_df_main.hatL), maximum(result_df_main.hatL)], 
-        color=:black, lw=2, linestyle=:dash, label="45-degree line")
+
+scatter(result_df_main.hatL, result_df_main.hatR, markersize=sqrt.(R)/10^2, alpha=0.5,
+    legend=false, xlabel="Hat L_i", ylabel="Hat R_i", 
+    title="", xlims=xlims, ylims=ylims)
+    # Add 45-degree dashed line
+# Add horizontal and vertical lines at 1
+hline!([1], color=:black, lw=2, linestyle=:dash, label="Horizontal line at 1")
+vline!([1], color=:black, lw=2, linestyle=:dash, label="Vertical line at 1")
+# plot!([minimum(result_df_main.hatL), maximum(result_df_main.hatL)], 
+    #    [minimum(result_df_main.hatL), maximum(result_df_main.hatL)], 
+    #    color=:black, lw=2, linestyle=:dash, label="45-degree line")
         annotate!(result_df_main.hatL[cook_county_idx], result_df_main.hatR[cook_county_idx], text("Cook County", :left, 8, :red))
         annotate!(result_df_main.hatL[nyc_county_idx], result_df_main.hatR[nyc_county_idx], text("NYC County", :left, 8, :red))
         annotate!(result_df_main.hatL[san_diego_county_idx], result_df_main.hatR[san_diego_county_idx], text("San Diego County", :left, 8, :red))

@@ -278,7 +278,7 @@ println("Sum of cf_hat_π * π: ", sum(cf_hat_π .* π))
 println("Sum of cf_hatL * L / sum(L): ", sum(cf_hatL .* L) / sum(L))
 println("Sum of cf_hatR * R / sum(R): ", sum(cf_hatR .* R) / sum(R))
 #
-var_hatB = sum( hatB .* λ, dims =2) ./ sum(λ, dims = 2)
+var_hatB = sum( (hatB).^1/ϵ .* λ, dims =2) ./ sum(λ, dims = 2)
 var_hatB = ( var_hatB .- mean(var_hatB))[:,1]
 
 # Create a DataFrame with the required columns
@@ -306,6 +306,7 @@ result_df_main = DataFrame(
     hatR = cf_hatR,
     hatv = cf_hat_v, 
     diag_hat_λ = diag(cf_λ), 
+    diag_hat_pi = diag(cf_hat_π), 
     hatP = cf_hatP,
     hatQ = cf_hatQ,
     real_v = real_v, 
@@ -340,5 +341,5 @@ end
 
 
 # include("plot_maps.jl")
+# include("plot_fig.jl")
 
-include("plot_fig.jl")

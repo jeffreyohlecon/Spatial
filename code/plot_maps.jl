@@ -63,7 +63,7 @@ p2 = plot_variable(merged_df, :cf_hatL, "Change in Workers (%) by County")
 p3 = plot_variable(merged_df, :cf_hatR, "Change in Residents (%) by County")
 p4 = plot_variable(merged_df, :diag_cf_λ, "Change in Living Where You Work (%) by County")
 p5 = plot_variable(merged_df, :real_v, "Change in Real Average Income (%) by County")
-p6 = plot_variable(merged_df, :shock, "Deviation from Mean Growth (p.p.) - Shock in B")
+p6 = plot_variable(merged_df, :shock, "Change in Average Welfare - Hat Bar Un")
 
 # Save the plots to the output/figures folder with higher resolution
 savefig(p1, "output/figures/cf_wages_by_county_$version.png")
@@ -112,7 +112,7 @@ p2_ny = plot_variable_ny(ny_df, :cf_hatL, "Change in Workers (%) by County")
 p3_ny = plot_variable_ny(ny_df, :cf_hatR, "Change in Residents (%) by County")
 p4_ny = plot_variable_ny(ny_df, :diag_cf_λ, "Change in Living Where You Work (%) by County")
 p5_ny = plot_variable_ny(ny_df, :real_v, "Change in Real Average Income (%) by County")
-p6_ny = plot_variable_ny(ny_df, :shock, "Deviation from Mean Growth (p.p.) - Shock in B")
+p6_ny = plot_variable_ny(ny_df, :shock, "Change in Average Welfare - Hat Bar Un")
 
 # Save the plots to the output/figures folder with higher resolution
 savefig(p1_ny, "output/figures/new_york/ny_cf_wages_by_county_$version.png")
@@ -160,7 +160,7 @@ p2_ca = plot_variable_ca(ca_df, :cf_hatL, "Change in Workers (%) by County")
 p3_ca = plot_variable_ca(ca_df, :cf_hatR, "Change in Residents (%) by County")
 p4_ca = plot_variable_ca(ca_df, :diag_cf_λ, "Change in Living Where You Work (%) by County")
 p5_ca = plot_variable_ca(ca_df, :real_v, "Change in Real Average Income (%) by County")
-p6_ca = plot_variable_ca(ca_df, :shock, "Deviation from Mean Growth (p.p.) - Shock in B")
+p6_ca = plot_variable_ca(ca_df, :shock, "Change in Average Welfare - Hat Bar Un")
 
 # Save the plots to the output/figures folder with higher resolution
 savefig(p1_ca, "output/figures/california/ca_cf_wages_by_county_$version.png")
