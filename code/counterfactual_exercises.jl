@@ -278,14 +278,13 @@ println("Sum of cf_hat_π * π: ", sum(cf_hat_π .* π))
 println("Sum of cf_hatL * L / sum(L): ", sum(cf_hatL .* L) / sum(L))
 println("Sum of cf_hatR * R / sum(R): ", sum(cf_hatR .* R) / sum(R))
 #
-var_hatB = sum( (hatB).^1/ϵ .* λ, dims =2) ./ sum(λ, dims = 2)
+var_hatB = sum( (hatB).^(1/ϵ) .* λ, dims =2) ./ sum(λ, dims = 2)
 
-non_demean_shock = sum( (hatB).^1/ϵ .* λ, dims =2) ./ sum(λ, dims = 2)
+non_demean_shock = sum( (hatB).^(1/ϵ) .* λ, dims =2) ./ sum(λ, dims = 2)
+
 non_demean_shock = non_demean_shock[:,1]
 
 var_hatB = ( var_hatB .- mean(var_hatB))[:,1]
-
-
 
 # Create a DataFrame with the required columns
 
