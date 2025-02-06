@@ -345,6 +345,20 @@ savefig("output/figures/histogram_density_U_$version.png")
 println("Counter-factual analysis finished for version: $version")  
 end
 
-# include("plot_maps.jl")
-# include("plot_fig.jl")
+include("plot_maps.jl")
+include("plot_fig.jl")
+
+
+
+result_df_main =  DataFrame( CSV.File("output/result_cf_het.csv") )
+
+
+hcat( result_df_main.var_hatB, result_df_main.non_demean_shock .- mean(result_df_main.non_demean_shock))
+
+
+result_df_main.var_hatB
+
+result_df_main.non_demean_shock .- mean(result_df_main.non_demean_shock)
+
+λ = Matrix( select( CSV.read("output/lambda_ni.csv", DataFrame), Not(:state_county_res) ) )
 
