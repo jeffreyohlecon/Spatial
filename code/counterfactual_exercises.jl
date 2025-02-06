@@ -286,6 +286,12 @@ non_demean_shock = non_demean_shock[:,1]
 
 var_hatB = ( var_hatB .- mean(var_hatB))[:,1]
 
+
+hat_total_λ = sum(cf_λ .* λ, dims =2 )[:,1] ./ sum(λ, dims = 2)
+hat_total_λ = hat_total_λ[:,1]
+
+diag_λ_adj = diag(cf_λ) ./ hat_total_λ
+
 # Create a DataFrame with the required columns
 
 # Preparing Dataframe for Plots
@@ -294,7 +300,7 @@ result_df = DataFrame(
     cf_w = (cf_w .-1) .*100, 
     cf_hatL = (cf_hatL .-1).*100, 
     cf_hatR = (cf_hatR .-1).*100, 
-    diag_cf_λ = (diag(cf_λ) .-1).*100,
+    diag_cf_λ = (diag_λ_adj .-1).*100,
     real_v = (real_v .-1).*100,
     shock = var_hatB,
     non_demean_shock = non_demean_shock 
@@ -310,6 +316,7 @@ result_df_main = DataFrame(
     hatR = cf_hatR,
     hatv = cf_hat_v, 
     diag_hat_λ = diag(cf_λ), 
+    diag_hat_λ_adj = diag_λ_adj,
     diag_hat_pi = diag(cf_hat_π), 
     hatP = cf_hatP,
     hatQ = cf_hatQ,
@@ -345,20 +352,16 @@ savefig("output/figures/histogram_density_U_$version.png")
 println("Counter-factual analysis finished for version: $version")  
 end
 
+
+
 include("plot_maps.jl")
-include("plot_fig.jl")
+#include("plot_fig.jl")
 
 
 
-result_df_main =  DataFrame( CSV.File("output/result_cf_het.csv") )
+#result_df_main =  DataFrame( CSV.File("output/result_cf_het.csv") )
+#hcat( result_df_main.var_hatB, result_df_main.non_demean_shock .- mean(result_df_main.non_demean_shock))
+#result_df_main.var_hatB
+#result_df_main.non_demean_shock .- mean(result_df_main.non_demean_shock)
 
-
-hcat( result_df_main.var_hatB, result_df_main.non_demean_shock .- mean(result_df_main.non_demean_shock))
-
-
-result_df_main.var_hatB
-
-result_df_main.non_demean_shock .- mean(result_df_main.non_demean_shock)
-
-λ = Matrix( select( CSV.read("output/lambda_ni.csv", DataFrame), Not(:state_county_res) ) )
 
