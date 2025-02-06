@@ -18,37 +18,32 @@ density!(real_v, label="Density of real wages")
 # Save the plot
 savefig("output/figures/real_wages_histogram_density_$version.png")
 
-# Calculate centiles for L and R
-L = result_df_main.L
+
+# Calculate centiles for R
 R = result_df_main.R
-
-centiles_L = quantile(L, 0:0.01:1)
 centiles_R = quantile(R, 0:0.01:1)
-
-centiles_L[101] = centiles_L[101] + 1e-6
 centiles_R[101] = centiles_R[101] + 1e-6
 
 # Assign centiles to each county
-result_df_main[!, :centile_L] = cut(L, centiles_L, labels=1:100)
 result_df_main[!, :centile_R] = cut(R, centiles_R, labels=1:100)
 
-# Calculate means of hat_L and hat_R for each centile
-result_df_main[!, :adj_hatL] = (result_df_main[!, :hatL] .- 1) .* 100
-result_df_main[!, :adj_hatR] = (result_df_main[!, :hatR] .- 1) .* 100
+# Calculate means of hat_L and hat_R for each centile of R
+result_df_main[!, :adj_hatL] = (result_df_main[!, :hatL] .- 1) 
+result_df_main[!, :adj_hatR] = (result_df_main[!, :hatR] .- 1) 
 
-mean_hatL_by_centile_L = combine(groupby(result_df_main, :centile_L)) do df
-    w = Weights(df.L)
+mean_hatL_by_centile_R = combine(groupby(result_df_main, :centile_R)) do df
+    w = Weights(df.R)
     (; weighted_mean_adj_hatL = mean(df.adj_hatL, w))
 end
 
 mean_hatR_by_centile_R = combine(groupby(result_df_main, :centile_R)) do df
     w = Weights(df.R)
     (; weighted_mean_adj_hatR = mean(df.adj_hatR, w))
-    end
+end
 
-# Ensure centile_L is converted to numeric values
-numeric_centile_L = parse.(Float64, string.(mean_hatL_by_centile_L.centile_L))
+# Ensure centile_R is converted to numeric values
 numeric_centile_R = parse.(Float64, string.(mean_hatR_by_centile_R.centile_R))
+
 
 # Function to apply LOESS smoothing
 function loess_smooth(x, y; span=0.5)
@@ -57,28 +52,18 @@ function loess_smooth(x, y; span=0.5)
 end
 
 # Compute LOESS smoothed values
-smooth_L = loess_smooth(numeric_centile_L, mean_hatL_by_centile_L.weighted_mean_adj_hatL)
+smooth_L = loess_smooth(numeric_centile_R, mean_hatL_by_centile_R.weighted_mean_adj_hatL)
 smooth_R = loess_smooth(numeric_centile_R, mean_hatR_by_centile_R.weighted_mean_adj_hatR)
 
-# Scatter plot with LOESS smoothing for L
-scatter_plot_weighted_L = scatter(numeric_centile_L, mean_hatL_by_centile_L.weighted_mean_adj_hatL, 
-    legend=false, xlabel="Centiles of L", ylabel="Weighted Mean Growth (%)", 
-    title="Weighted Mean Growth (%) by Centiles of L", 
-    xticks=([0, 10, 25, 50, 75, 90, 100], string.([0, 10, 25, 50, 75, 90,100])))
 
-plot!(numeric_centile_L, smooth_L, label="loess", lw=2, color=:blue)  # Add LOESS line
+# Plot both curves in the same plot with different colors and include scatter points
+plot(numeric_centile_R, smooth_L, label="", lw=2, color=:blue, xlabel="Centiles of R", ylabel="Weighted Mean Growth (%)", title="")
+scatter!(numeric_centile_R, mean_hatL_by_centile_R.weighted_mean_adj_hatL, label="Labor", color=:blue, marker=:circle)
+plot!(numeric_centile_R, smooth_R, label="", lw=2, color=:red)
+scatter!(numeric_centile_R, mean_hatR_by_centile_R.weighted_mean_adj_hatR, label="Residents", color=:red, marker=:circle)
 
-# Scatter plot with LOESS smoothing for R
-scatter_plot_weighted_R = scatter(numeric_centile_R, mean_hatR_by_centile_R.weighted_mean_adj_hatR, 
-    legend=false, xlabel="Centiles of R", ylabel="Weighted Mean Growth (%)", 
-    title="Weighted Mean Growth (%) by Centiles of R", 
-    xticks=([0, 10, 25, 50, 75, 90, 100], string.([0, 10, 25, 50, 75, 90,100])))
-
-plot!(numeric_centile_R, smooth_R, label="loess", lw=2, color=:blue)
-
-    # Save the plots
-savefig(scatter_plot_weighted_L, "output/figures/scatter_hat_L_$version.png")
-savefig(scatter_plot_weighted_R, "output/figures/scatter_hat_R_$version.png")
+# Save the combined plot
+savefig("output/figures/combined_scatter_hat_L_and_R_$version.png")
 
 # Filter out high outliers in A
 A = result_df_main.A
@@ -119,6 +104,7 @@ nyc_county_fips = 36061
 san_diego_county_fips = 6073
 san_bernardino_fips = 6071
 middlesex_county_fips = 25017
+arlington_county_fips = 51013
 
 # Get indices for the specified counties
 cook_county_idx = findfirst(result_df_main.vector_number .== cook_county_fips)
@@ -126,6 +112,7 @@ nyc_county_idx = findfirst(result_df_main.vector_number .== nyc_county_fips)
 san_diego_county_idx = findfirst(result_df_main.vector_number .== san_diego_county_fips)
 san_bernardino_county_idx = findfirst(result_df_main.vector_number .== san_bernardino_fips)
 middlesex_county_idx = findfirst(result_df_main.vector_number .== middlesex_county_fips) 
+arlington_county_idx = findfirst(result_df_main.vector_number .== arlington_county_fips) 
 
 # Add labels to the scatter plot
 
@@ -142,6 +129,23 @@ result_df_main.vector_number[max_R_idx]
 xlims = (0.96, 1.08)
 ylims = (0.96, 1.08)
 
+# Fit a weighted linear model (Ordinary Least Squares)
+
+weights = sqrt.(result_df_main.R)  # Assuming R contains the weights
+
+X = [ones(length(result_df_main.hatL)) result_df_main.hatL]  # Design matrix
+y = result_df_main.hatR  # Response variable
+
+# Apply the weights to both X and y
+X_weighted = X .* weights
+y_weighted = y .* weights
+
+# Solve the weighted least squares problem
+weighted_coeffs = X_weighted \ y_weighted
+
+# Compute fitted values
+weighted_linear_fit = weighted_coeffs[1] .+ weighted_coeffs[2] .* result_df_main.hatL
+
 
 scatter(result_df_main.hatL, result_df_main.hatR, markersize=sqrt.(R)/10^2, alpha=0.5,
     legend=false, xlabel="Hat L_i", ylabel="Hat R_i", 
@@ -150,18 +154,56 @@ scatter(result_df_main.hatL, result_df_main.hatR, markersize=sqrt.(R)/10^2, alph
 # Add horizontal and vertical lines at 1
 hline!([1], color=:black, lw=2, linestyle=:dash, label="Horizontal line at 1")
 vline!([1], color=:black, lw=2, linestyle=:dash, label="Vertical line at 1")
+#Not sure I want this regression
+#plot!(result_df_main.hatL, weighted_linear_fit, color=:blue, lw=2, label="Weighted Linear Fit")
 # plot!([minimum(result_df_main.hatL), maximum(result_df_main.hatL)], 
     #    [minimum(result_df_main.hatL), maximum(result_df_main.hatL)], 
     #    color=:black, lw=2, linestyle=:dash, label="45-degree line")
-        annotate!(result_df_main.hatL[cook_county_idx], result_df_main.hatR[cook_county_idx], text("Cook County", :left, 8, :red))
-        annotate!(result_df_main.hatL[nyc_county_idx], result_df_main.hatR[nyc_county_idx], text("NYC County", :left, 8, :red))
-        annotate!(result_df_main.hatL[san_diego_county_idx], result_df_main.hatR[san_diego_county_idx], text("San Diego County", :left, 8, :red))
+        annotate!(result_df_main.hatL[cook_county_idx], result_df_main.hatR[cook_county_idx], text("Cook", :left, 8, :red))
+        annotate!(result_df_main.hatL[nyc_county_idx], result_df_main.hatR[nyc_county_idx], text("New York", :left, 8, :red))
+        annotate!(result_df_main.hatL[san_diego_county_idx], result_df_main.hatR[san_diego_county_idx], text("San Diego", :left, 8, :red))
       # annotate!(result_df_main.hatL[san_bernardino_county_idx], result_df_main.hatR[san_bernardino_county_idx], text("San Bernardino County", :left, 8, :red))
-        annotate!(result_df_main.hatL[middlesex_county_idx], result_df_main.hatR[middlesex_county_idx], text("Middlesex County", :left, 8, :red))
-
+        annotate!(result_df_main.hatL[middlesex_county_idx], result_df_main.hatR[middlesex_county_idx], text("Middlesex", :left, 8, :red))
+        annotate!(result_df_main.hatL[arlington_county_idx], result_df_main.hatR[arlington_county_idx], text("Arlington", :left, 8, :red))
 
 # Save the plot
 savefig("output/figures/scatterplot_hatL_hatR_categorized_bubble_sizes_$version.png")
 
+
+
+function lorenz_curve(values)
+    sorted_values = sort(values)
+    cum_values = cumsum(sorted_values)
+    total = sum(sorted_values)
+    lorenz_points = cum_values ./ total
+    return vcat(0.0, lorenz_points)  # Ensure correct shape
+end
+
+# Compute Lorenz curves
+lorenz_hatR_R = lorenz_curve(Vector(result_df_main.hatL .* result_df_main.L))
+lorenz_R = lorenz_curve(Vector(result_df_main.L))
+
+# Generate x-values
+x_vals = range(0, stop=1, length=length(lorenz_hatR_R))
+
+gini_after = 1 - 2 * sum(lorenz_hatR_R[2:end] .* diff(x_vals))
+gini_before = 1 - 2 * sum(lorenz_R[2:end] .* diff(x_vals))
+
+# Add text annotations for Gini indices
+# Plot Lorenz curves
+plot(x_vals, lorenz_hatR_R, label="Lorenz Curve of hatL * L", lw=2, color=:blue, xlabel="Cumulative Share of Population", ylabel="Cumulative Share of Value", title="Lorenz Curve")
+plot!(x_vals, lorenz_R, label="Lorenz Curve of L", lw=2, color=:red, linestyle=:dash)
+plot!([0, 1], [0, 1], color=:black, lw=2, linestyle=:dash, label="45-degree line")
+annotate!(0.15, 0.75, text("Gini Index Before: $(round(gini_before, digits=4))", :left, 10, :black))
+annotate!(0.15, 0.65, text("Gini Index After: $(round(gini_after, digits=4))", :left, 10, :black))
+
+# Save the plot
+savefig("output/figures/lorenz_$version.png")
+
 println("Generating other plots: $version")  
 end
+
+
+lorenz_hatR_R = lorenz_curve(Vector(result_df_main.hatL .* result_df_main.L))
+lorenz_R = lorenz_curve(Vector(result_df_main.L))
+plot(x_vals, (lorenz_hatR_R - lorenz_R))

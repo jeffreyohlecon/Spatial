@@ -279,7 +279,13 @@ println("Sum of cf_hatL * L / sum(L): ", sum(cf_hatL .* L) / sum(L))
 println("Sum of cf_hatR * R / sum(R): ", sum(cf_hatR .* R) / sum(R))
 #
 var_hatB = sum( (hatB).^1/ϵ .* λ, dims =2) ./ sum(λ, dims = 2)
+
+non_demean_shock = sum( (hatB).^1/ϵ .* λ, dims =2) ./ sum(λ, dims = 2)
+non_demean_shock = non_demean_shock[:,1]
+
 var_hatB = ( var_hatB .- mean(var_hatB))[:,1]
+
+
 
 # Create a DataFrame with the required columns
 
@@ -291,10 +297,9 @@ result_df = DataFrame(
     cf_hatR = (cf_hatR .-1).*100, 
     diag_cf_λ = (diag(cf_λ) .-1).*100,
     real_v = (real_v .-1).*100,
-    shock = var_hatB
+    shock = var_hatB,
+    non_demean_shock = non_demean_shock 
 )
-
-
 
 # Shocks for the maps 
 CSV.write("output/map_database_$version.csv", result_df)
@@ -314,7 +319,9 @@ result_df_main = DataFrame(
     L = L, 
     R = R,
     A = A, 
-    w = w)
+    w = w, 
+    non_demean_shock = non_demean_shock  
+    )
 
 # Save the result_df as a .csv file in output as result_first_cf
 CSV.write("output/result_cf_$version.csv", result_df_main)
@@ -338,7 +345,6 @@ savefig("output/figures/histogram_density_U_$version.png")
 
 println("Counter-factual analysis finished for version: $version")  
 end
-
 
 # include("plot_maps.jl")
 # include("plot_fig.jl")
