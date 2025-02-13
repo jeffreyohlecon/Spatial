@@ -179,9 +179,12 @@ function lorenz_curve(values)
     return vcat(0.0, lorenz_points)  # Ensure correct shape
 end
 
+
+
+
 # Compute Lorenz curves
-lorenz_hatR_R = lorenz_curve(Vector(result_df_main.hatL .* result_df_main.L))
-lorenz_R = lorenz_curve(Vector(result_df_main.L))
+lorenz_hatR_R = lorenz_curve(Vector(result_df_main.hatR .* result_df_main.R .* result_df_main.hatv .* result_df_main.v))
+lorenz_R = lorenz_curve(Vector(result_df_main.v .* result_df_main.R))
 
 # Generate x-values
 x_vals = range(0, stop=1, length=length(lorenz_hatR_R))
@@ -191,8 +194,8 @@ gini_before = 1 - 2 * sum(lorenz_R[2:end] .* diff(x_vals))
 
 # Add text annotations for Gini indices
 # Plot Lorenz curves
-plot(x_vals, lorenz_hatR_R, label="Lorenz Curve of hatL * L", lw=2, color=:blue, xlabel="Cumulative Share of Population", ylabel="Cumulative Share of Value", title="Lorenz Curve")
-plot!(x_vals, lorenz_R, label="Lorenz Curve of L", lw=2, color=:red, linestyle=:dash)
+plot(x_vals, lorenz_hatR_R, label="Lorenz Curve of New Total Residential Income", lw=2, color=:blue, xlabel="Cumulative Share of Population", ylabel="Cumulative Share of Value", title="Lorenz Curve")
+plot!(x_vals, lorenz_R, label="Lorenz Curve of Total Residential Income", lw=2, color=:red, linestyle=:dash)
 plot!([0, 1], [0, 1], color=:black, lw=2, linestyle=:dash, label="45-degree line")
 annotate!(0.15, 0.75, text("Gini Index Before: $(round(gini_before, digits=4))", :left, 10, :black))
 annotate!(0.15, 0.65, text("Gini Index After: $(round(gini_after, digits=4))", :left, 10, :black))
@@ -203,7 +206,3 @@ savefig("output/figures/lorenz_$version.png")
 println("Generating other plots: $version")  
 end
 
-
-lorenz_hatR_R = lorenz_curve(Vector(result_df_main.hatL .* result_df_main.L))
-lorenz_R = lorenz_curve(Vector(result_df_main.L))
-plot(x_vals, (lorenz_hatR_R - lorenz_R))

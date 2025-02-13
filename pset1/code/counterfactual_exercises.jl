@@ -259,6 +259,9 @@ end
 cf_w, cf_λ = eq_gen(guess_hat_wage, guess_hat_lambda, tol, max_iter, ζ, hatB, hat_κ, hat_A, hat_d, v, w, L, R, Y, D, λ, π)
 cf_hatL, cf_hatR = calc_LR(L, R, λ, cf_λ)
 
+# Save cf_lambda to a CSV file in dropbox_path
+CSV.write(joinpath(dropbox_path, "cf_lambda_$version.csv"),  DataFrame(cf_λ, :auto))
+
 cf_hat_v = calc_hatv(v, w, λ, hatB, hat_κ, cf_w, cf_λ)
 
 vector_number = select( CSV.read("output/lambda_ni.csv", DataFrame), :state_county_res)[:,1]
@@ -326,6 +329,7 @@ result_df_main = DataFrame(
     R = R,
     A = A, 
     w = w, 
+    v = v, 
     non_demean_shock = non_demean_shock  
     )
 
@@ -354,8 +358,8 @@ end
 
 
 
-include("plot_maps.jl")
-#include("plot_fig.jl")
+#include("plot_maps.jl")
+include("plot_fig.jl")
 
 
 
