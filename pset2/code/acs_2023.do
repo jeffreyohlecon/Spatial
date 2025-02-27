@@ -37,30 +37,44 @@ set more off
 		// **Manufacturing (12 Sectors)**
 		replace sector_classification = "01 - Food, Beverage, and Tobacco" if inrange(naicsp_3digit, 311, 312) // ok
 		replace sector_classification = "02 - Textile, Apparel, Leather" if inrange(naicsp_3digit, 313, 316) // ok
+		replace sector_classification = "02 - Textile, Apparel, Leather" if naicsp == "31M"
+		
+		
 		replace sector_classification = "03 - Wood, Paper, Printing" if inrange(naicsp_3digit, 321, 323) // ok 
 		replace sector_classification = "04 - Petroleum and Coal" if naicsp_3digit == 324 // ok
 		replace sector_classification = "05 - Chemical" if naicsp_3digit == 325 // ok
 		replace sector_classification = "06 - Plastics and Rubber" if naicsp_3digit == 326 // ok
 		replace sector_classification = "07 - Nonmetallic Mineral" if naicsp_3digit == 327 // ok
 		replace sector_classification = "08 - Primary and Fabricated Metal" if inrange(naicsp_3digit, 331, 332) // ok 
+		replace sector_classification = "08 - Primary and Fabricated Metal" if naicsp == "33MS"
+		
 		replace sector_classification = "09 -  Machinery" if naicsp_3digit == 333 // ok
 		replace sector_classification = "10 - Computer, Electronic, Electrical Equipment" if inrange(naicsp_3digit, 334, 335) // ok 
 		replace sector_classification = "11 - Transportation Equipment" if naicsp_3digit == 336 //ok 
 		replace sector_classification = "12 - Furniture, Miscellaneous Manufacturing" if inrange(naicsp_3digit, 337, 339) // ok 
 		
 		// **Wholesale & Retail Trade (Fixing the Issue)**
-		replace sector_classification = "13 - Wholesale and Retail Trade" if inrange(naicsp_2digit, 42, 45) // ok 
+		replace sector_classification = "13 - Wholesale and Retail Trade" if inrange(naicsp_2digit, 42, 45) // ok 43 group doesn't exist anymore - it used to be a special kind of wholesale
+		replace sector_classification = "13 - Wholesale and Retail Trade" if naicsp == "4MS"
 		
 		// **Construction**
 		replace sector_classification = "14 - Construction" if naicsp_2digit == 23  // ok 
 
 		// **Services (8 Sectors)**
 		replace sector_classification = "15 - Transport Services" if inrange(naicsp_3digit, 481, 488) // ok 
-		replace sector_classification = "16 - Information Services" if inrange(naicsp_3digit, 511, 518) // ok
-		replace sector_classification = "17 - Finance and Insurance" if inrange(naicsp_3digit, 521, 525) // ok 
-		replace sector_classification = "18 - Real Estate" if inrange(naicsp_3digit, 531, 533) // ok 
+		
+		* replace sector_classification = "16 - Information Services" if inrange(naicsp_3digit, 511, 518) // ok Do we want to exclude 519? I don't think so! 
+		
+		replace sector_classification = "16 - Information Services" if naicsp_2digit == 51 // ok
+		
+		replace sector_classification = "17 - Finance and Insurance" if naicsp_2digit == 52 // ok 
+		
+		replace sector_classification = "18 - Real Estate" if naicsp_2digit == 53 // ok 
+		
 		replace sector_classification = "19 - Education" if naicsp_2digit == 61 // ok 
+		
 		replace sector_classification = "20 - Health Care" if inrange(naicsp_3digit, 621, 624) //ok 
+		
 		replace sector_classification = "21 - Accommodation and Food Services" if inrange(naicsp_3digit, 721, 722) //ok 
 		replace sector_classification = "22 - Other Services" if inlist(naicsp_3digit, 493, 541, 561, 562, 711, 712, 713, 811, 812, 813, 814) // ok, actually mistake at 55...
 		replace sector_classification = "22 - Other Services" if naicsp_2digit == 55 // ok
@@ -90,6 +104,7 @@ set more off
 		
 		tabstat pwgtp, stat(sum) by(sector_classification)
 		
+		tabout sector_classification using "$data/observations_sector.csv", style(csv) replace
 		
 		gen sector_cdp = real(substr(sector_classification, 1, 2))
 		
